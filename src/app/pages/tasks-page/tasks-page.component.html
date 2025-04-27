@@ -1,0 +1,315 @@
+<app-main-header></app-main-header>
+
+<div class="container-fluid mt-4">
+  <p-toast></p-toast>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0 text-white">{{ activeTab === 0 ? 'Завдання' : 'Звички' }}</h2>
+        <div>
+          <button pButton icon="pi pi-plus" label="Нове завдання" class="p-button-success me-2" 
+                  (click)="openNewMissionDialog()" *ngIf="activeTab === 0"></button>
+          <button pButton icon="pi pi-plus" label="Нова звичка" class="p-button-success me-2" 
+                  (click)="openNewHabitDialog()" *ngIf="activeTab === 1"></button>
+        </div>
+      </div>
+      
+      <p-tabView [(activeIndex)]="activeTab">
+        <p-tabPanel header="Завдання">
+          <p-table [value]="missions" styleClass="p-datatable-sm" [tableStyle]="{'min-width': '50rem'}"
+                  [paginator]="missions.length > 10" [rows]="10" [showCurrentPageReport]="true" 
+                  responsiveLayout="scroll" [rowHover]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 4rem" class="text-center">Статус</th>
+                <th>Назва</th>
+                <th style="width: 10rem">Пріоритет</th>
+                <th style="width: 12rem">Термін виконання</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-mission>
+              <tr [ngClass]="{'completed-row': mission.completed}" 
+                  (click)="openMissionSidebar(mission, $event)">
+                <td class="text-center" (click)="$event.stopPropagation()">
+                  <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input" type="checkbox" 
+                          [checked]="mission.completed"
+                          (change)="toggleMissionComplete(mission)">
+                  </div>
+                </td>
+                <td>
+                  <span class="mission-title fw-medium">{{ mission.title }}</span>
+                </td>
+                <td>
+                  <span class="priority-badge" [ngClass]="getPriorityClass(mission.priority)">{{ mission.priority }}</span>
+                </td>
+                <td>
+                  <span>{{ mission.dueDate | date:'mediumDate' }}</span>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="4" class="text-center p-4">
+                  <div class="empty-message">
+                    <p>Поки немає завданнь. Створіть ваше перше завдання!</p>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-tabPanel>
+        
+        <p-tabPanel header="Звички">
+          <p-table [value]="habits" styleClass="p-datatable-sm" [tableStyle]="{'min-width': '50rem'}"
+                  [paginator]="habits.length > 10" [rows]="10" [showCurrentPageReport]="true" 
+                  responsiveLayout="scroll" [rowHover]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 4rem" class="text-center">Статус</th>
+                <th>Назва</th>
+                <th style="width: 10rem">Частота</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-habit>
+              <tr [ngClass]="{'completed-row': habit.completed}"
+                  (click)="openHabitSidebar(habit, $event)">
+                <td class="text-center" (click)="$event.stopPropagation()">
+                  <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input" type="checkbox" 
+                          [checked]="habit.completed"
+                          (change)="toggleHabitComplete(habit)">
+                  </div>
+                </td>
+                <td>
+                  <span class="habit-title fw-medium">{{ habit.title }}</span>
+                </td>
+                <td>
+                  <span class="frequency-badge">{{ habit.frequency }}</span>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="3" class="text-center p-4">
+                  <div class="empty-message">
+                    <p>Поки немає звичок. Створіть вашу першу звичку!</p>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+ 
+  <p-sidebar [(visible)]="missionSidebarVisible" position="right"
+            [dismissible]="true" 
+            [showCloseIcon]="true"
+            [transitionOptions]="'0ms'"
+            [modal]="true"
+            [baseZIndex]="1000">
+    <ng-container *ngIf="selectedMission">
+      <div class="sidebar-header">
+        <h3 [ngClass]="{'text-decoration-line-through': selectedMission.completed}">{{ selectedMission.title }}</h3>
+        <div class="d-flex mt-3">
+          <button pButton icon="pi pi-pencil" label="Редагувати" class="p-button-outlined mr-2" 
+                  (click)="openEditMissionDialog(selectedMission)"></button>
+          <button pButton icon="pi pi-trash" label="Видалити" class="p-button-outlined p-button-danger ms-2" 
+                  (click)="deleteMission(selectedMission); missionSidebarVisible = false"></button>
+        </div>
+      </div>
+      <div class="sidebar-content mt-4">
+        <div class="detail-item">
+          <span class="detail-label">Статус:</span>
+          <span class="detail-value d-flex align-items-center">
+            <span>{{ selectedMission.completed ? 'Виконано' : 'Не виконано' }}</span>
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Пріоритет:</span>
+          <span class="priority-badge detail-value" [ngClass]="getPriorityClass(selectedMission.priority)">{{ selectedMission.priority }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Термін виконання:</span>
+          <span class="detail-value">{{ selectedMission.dueDate | date:'fullDate' }}</span>
+        </div>
+        <div class="detail-item" *ngIf="selectedMission.description">
+          <span class="detail-label">Опис:</span>
+          <div class="detail-value">{{ selectedMission.description }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </p-sidebar>
+
+  <p-sidebar [(visible)]="habitSidebarVisible" position="right" 
+            styleClass="p-sidebar-md minimalist-sidebar" 
+            [dismissible]="true" 
+            [showCloseIcon]="true"
+            [transitionOptions]="'0ms'"
+            [modal]="true"
+            [baseZIndex]="1000">
+    <ng-container *ngIf="selectedHabit">
+      <div class="sidebar-header">
+        <h3 [ngClass]="{'text-decoration-line-through': selectedHabit.completed}">{{ selectedHabit.title }}</h3>
+        <div class="d-flex mt-3">
+          <button pButton icon="pi pi-pencil" label="Редагувати" class="p-button-outlined mr-2" 
+                  (click)="openEditHabitDialog(selectedHabit)"></button>
+          <button pButton icon="pi pi-trash" label="Видалити" class="p-button-outlined p-button-danger ms-2" 
+                  (click)="deleteHabit(selectedHabit); habitSidebarVisible = false"></button>
+        </div>
+      </div>
+      <div class="sidebar-content mt-4">
+        <div class="detail-item">
+          <span class="detail-label">Статус:</span>
+          <span class="detail-value d-flex align-items-center">
+            <span>{{ selectedHabit.completed ? 'Виконано' : 'Не виконано' }}</span>
+          </span>
+        </div>
+        <div class="detail-item" *ngIf="selectedHabit.description">
+          <span class="detail-label">Опис:</span>
+          <div class="detail-value">{{ selectedHabit.description }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </p-sidebar>
+
+  <p-dialog [(visible)]="missionDialogVisible" 
+            [header]="isEditing && editingType === 'mission' ? 'Редагування завдання' : 'Нове завдання'" 
+            [modal]="true" 
+            [style]="{width: '550px'}" 
+            [draggable]="false" 
+            [resizable]="false"
+            styleClass="p-dialog-header-primary">
+    <div class="p-3">
+      <p-card [style]="{'box-shadow': 'none'}">
+        <form [formGroup]="missionForm" class="p-fluid">
+          <div class="field">
+            <div class="p-float-label d-flex flex-column">
+              <label for="mission-title">Назва</label>
+              <input id="mission-title" type="text" pInputText formControlName="title" />
+            </div>
+            <small class="p-error" *ngIf="missionForm.get('title')?.invalid && missionForm.get('title')?.touched">
+              Назва обов'язкова
+            </small>
+          </div>
+          
+          <p-divider></p-divider>
+          
+          <div class="field">
+            <div class="p-float-label d-flex flex-column">
+              <label for="mission-description">Опис</label>
+              <textarea id="mission-description" rows="3" pInputTextarea formControlName="description"></textarea>
+            </div>
+          </div>
+          
+          <div class="grid">
+            <div class="col-12 md:col-6">
+              <div class="field">
+                <div class="p-float-label d-flex flex-column">
+                  <label for="mission-dueDate">Термін виконання</label>
+                  <p-calendar id="mission-dueDate" formControlName="dueDate"
+                              [showIcon]="true" dateFormat="dd/mm/yy"
+                              styleClass="w-full"></p-calendar>
+                  <small class="p-error"
+                         *ngIf="missionForm.get('dueDate')?.invalid && missionForm.get('dueDate')?.touched">
+                    Термін виконання обов'язковий
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 md:col-6">
+              <div class="field">
+                <div class="p-float-label d-flex flex-column">
+                  <label for="mission-priority">Пріоритет</label>
+                  <p-selectButton id="mission-priority" [options]="priorityOptions" 
+                                 formControlName="priority" optionLabel="label" 
+                                 optionValue="value" styleClass="w-full"></p-selectButton>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="field-checkbox" *ngIf="isEditing && editingType === 'mission'">
+            <p-checkbox formControlName="completed" [binary]="true" inputId="mission-completed"></p-checkbox>
+            <label for="mission-completed" class="ml-2">Позначити як виконане</label>
+          </div>
+        </form>
+      </p-card>
+    </div>
+    
+    <ng-template pTemplate="footer">
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Скасувати" icon="pi pi-times" styleClass="p-button-text" (click)="missionDialogVisible = false"></p-button>
+        <p-button label="Зберегти" icon="pi pi-check" styleClass="p-button-primary" (click)="saveMission()"></p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog [(visible)]="habitDialogVisible" 
+            [header]="isEditing && editingType === 'habit' ? 'Редагування звички' : 'Нова звичка'" 
+            [modal]="true" 
+            [style]="{width: '550px'}" 
+            [draggable]="false" 
+            [resizable]="false"
+            styleClass="p-dialog-header-primary">
+    <div class="p-3">
+      <p-card [style]="{'box-shadow': 'none'}">
+        <form [formGroup]="habitForm" class="p-fluid">
+          <div class="p-float-label d-flex flex-column">
+            <label for="habit-title">Назва</label>
+            <input id="habit-title" type="text" pInputText formControlName="title"/>
+          </div>
+          <small class="p-error" *ngIf="habitForm.get('title')?.invalid && habitForm.get('title')?.touched">
+            Назва обов'язкова
+          </small>
+
+          <p-divider></p-divider>
+          
+          <div class="field">
+            <div class="p-float-label d-flex flex-column">
+              <label for="habit-description">Опис</label>
+              <textarea id="habit-description" rows="3" pInputTextarea formControlName="description"></textarea>
+            </div>
+          </div>
+          
+          <div class="field">
+            <div class="p-float-label d-flex flex-column">
+              <label for="habit-weekdays">Дні тижня</label>
+              <p-multiSelect id="habit-weekdays"
+                             appendTo="body"
+                             panelStyleClass="dropdown-up"
+                             [options]="weekdayOptions" 
+                             formControlName="weekdays"
+                             optionLabel="label"
+                             optionValue="value"
+                             display="chip"
+                             defaultLabel="Виберіть дні тижня"
+                             styleClass="w-full"
+                             [showToggleAll]="false"
+                             ariaFilterLabel="Пошук"
+                             [filter]="false"></p-multiSelect>
+              <small class="p-error" *ngIf="habitForm.get('weekdays')?.invalid && habitForm.get('weekdays')?.touched">
+                Оберіть хоча б один день тижня
+              </small>
+            </div>
+          </div>
+          
+          <div class="field-checkbox" *ngIf="isEditing && editingType === 'habit'">
+            <p-checkbox formControlName="completed" [binary]="true" inputId="habit-completed"></p-checkbox>
+            <label for="habit-completed" class="ml-2">Позначити як виконане</label>
+          </div>
+        </form>
+      </p-card>
+    </div>
+    
+    <ng-template pTemplate="footer">
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Скасувати" icon="pi pi-times" styleClass="p-button-text" (click)="habitDialogVisible = false"></p-button>
+        <p-button label="Зберегти" icon="pi pi-check" styleClass="p-button-primary" (click)="saveHabit()"></p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>

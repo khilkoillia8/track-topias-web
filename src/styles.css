@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+body {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/start-tt-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  min-height: 100vh;
+}
+
+.p-card {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Level display styles */
+.level-badge {
+  background-color: #3f51b5;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.exp-text {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.level-info {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.level-progress {
+  height: 0.6rem !important;
+  border-radius: 10px !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

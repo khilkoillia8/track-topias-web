@@ -1,0 +1,21 @@
+.fullscreen-background {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../../../../assets/start-tt-background.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 92.1vh;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.fullscreen-background .row {
+    min-height: 92.1vh;
+}
+
+.fullscreen-bg {
+    position: relative;
+    overflow-y: auto;
+    height: calc(100vh - 60px);
+    max-height: 100%;
+}

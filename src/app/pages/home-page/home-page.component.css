@@ -1,0 +1,70 @@
+.user-avatar {
+  width: 120px;
+  height: 120px;
+  border: 3px solid var(--surface-border);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+.user-header {
+  background-color: var(--surface-ground);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.user-info {
+  line-height: 1.7;
+}
+
+.mission-placeholder {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--surface-border);
+  transition: background-color 0.2s;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-item:hover {
+  background-color: var(--surface-hover);
+}
+
+.task-item.completed .task-title {
+  text-decoration: line-through;
+  color: var(--text-color-secondary);
+}
+
+.section-title {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.empty-message {
+  font-style: italic;
+  padding: 10px 0;
+  text-align: center;
+}
+
+:host ::ng-deep .user-card .p-card-content,
+:host ::ng-deep .task-card .p-card-content {
+  padding-top: 1rem;
+}
+
+.form-check-input {
+  cursor: pointer;
+}

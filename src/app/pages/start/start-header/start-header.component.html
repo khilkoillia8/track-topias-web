@@ -1,0 +1,15 @@
+<p-menubar [model]="menuItems">
+  <ng-template #start>
+    <span class="fw-bold fs-4 me-4">TrackTopias</span>
+  </ng-template>
+
+  <ng-template #item let-item let-root="root">
+    <a pRipple class="flex items-center p-menubar-item-link">
+      <span>{{ item.label }}</span>
+    </a>
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    <button pButton [label]="isLogin ? 'Увійти' : 'Зареєструватися'"  class="p-button-outlined p-button-sm" (click)="onClick()"></button>
+  </ng-template>
+</p-menubar>

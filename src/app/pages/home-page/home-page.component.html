@@ -1,0 +1,80 @@
+<app-main-header></app-main-header>
+<p-toast></p-toast>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <p-card styleClass="user-card shadow">
+        <ng-template pTemplate="header">
+          <div class="user-header text-center py-3">
+            <h3 class="mb-0">{{ user?.username || 'Користувач' }}</h3>
+          </div>
+        </ng-template>
+        <div class="user-info">
+          <p><strong>Роль:</strong> {{ user?.role || 'Користувач' }}</p>
+          <p><strong>ID користувача:</strong> {{ user?.id }}</p>
+          
+          <!-- Level and experience section -->
+          <div *ngIf="loading.level" class="text-center my-3">
+            <i class="pi pi-spin pi-spinner"></i>
+            <span class="ms-2">Завантаження даних...</span>
+          </div>
+          
+          <div *ngIf="!loading.level && userLevel" class="level-info mt-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="level-badge">Рівень {{ userLevel.level }}</span>
+              <span class="exp-text">{{ userLevel.score }} / {{ userLevel.scoreToNextLevel }} XP</span>
+            </div>
+            <p-progressBar [value]="getProgressPercentage()" [showValue]="false" styleClass="level-progress"></p-progressBar>
+          </div>
+        </div>
+      </p-card>
+    </div>
+    
+    <div class="col-md-8">
+      <p-card header="Сьогоднішні завдання" styleClass="task-card shadow">
+        <div class="task-section mb-4">
+          <h5 class="section-title">Завдання на сьогодні</h5>
+          <ul class="task-list">
+            <li *ngFor="let mission of todayMissions" class="task-item" [ngClass]="{'completed': mission.completed}">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" class="form-check-input me-2" 
+                         [checked]="mission.completed" 
+                         (change)="toggleMissionComplete(mission)">
+                  <span class="task-title">{{ mission.title }}</span>
+                </div>
+                <span class="badge ms-2" [ngClass]="getPriorityClass(mission.priority)">
+                  {{ mission.priority }}
+                </span>
+              </div>
+            </li>
+            <li *ngIf="todayMissions.length === 0" class="empty-message">
+              Немає завдань на сьогодні
+            </li>
+          </ul>
+        </div>
+        
+        <div class="task-section">
+          <h5 class="section-title">Звички на сьогодні</h5>
+          <ul class="task-list">
+            <li *ngFor="let habit of todayHabits" class="task-item" [ngClass]="{'completed': habit.completed}">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" class="form-check-input me-2" 
+                         [checked]="habit.completed" 
+                         (change)="toggleHabitComplete(habit)">
+                  <span class="task-title">{{ habit.title }}</span>
+                </div>
+                <span class="badge bg-primary ms-2">{{ habit.weekdays }}</span>
+              </div>
+            </li>
+            <li *ngIf="todayHabits.length === 0" class="empty-message">
+              Немає звичок на сьогодні
+            </li>
+          </ul>
+        </div>
+      </p-card>
+    </div>
+  </div>
+</div>

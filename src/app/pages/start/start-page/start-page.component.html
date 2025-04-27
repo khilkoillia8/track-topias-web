@@ -1,0 +1,19 @@
+<app-start-header [isLogin]="!showLogin" (loginToggle)="toggleForm($event)"></app-start-header>
+
+<div class="container-fluid fullscreen-background">
+  <div class="row align-items-center w-100">
+    <div class="col-md-6 p-4">
+      <p-card styleClass="info-card shadow-lg border-0" header="Мотивуйте себе" subheader="Досягнення своїх цілей">
+        <p class="lead text-light">Настав час розважатися під час виконання завдань! Приєднуйтесь до TrackTopias!</p>
+        <button pButton label="Дізнатися більше" icon="pi pi-info-circle" class="p-button-outlined info-button mt-3"></button>
+      </p-card>
+    </div>
+    <div class="col-md-6 d-flex justify-content-center align-items-center p-4">
+      <div class="register-container" style="max-width: 450px; width: 100%;">
+        <app-login *ngIf="showLogin"  (registerClick)="toggleForm(false)"></app-login>
+        <app-register *ngIf="!showLogin" (loginToggle)="toggleForm($event)" (loginClick)="toggleForm(true)"></app-register>
+      </div>
+    </div>
+  </div>
+</div>
+

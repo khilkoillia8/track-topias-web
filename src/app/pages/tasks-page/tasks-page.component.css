@@ -1,0 +1,197 @@
+.completed h5 {
+  text-decoration: line-through;
+  color: var(--surface-600);
+}
+
+.completed p {
+  text-decoration: line-through;
+}
+
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.empty-message {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.sidebar-placeholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  background-color: var(--surface-ground);
+  border-radius: 8px;
+}
+
+.form-check-input {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.actions button {
+  margin-left: 0.25rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-buttons button {
+  min-width: 80px;
+}
+
+.card:hover .action-buttons button {
+  opacity: 1;
+}
+
+.action-buttons button {
+  opacity: 0.8;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.action-buttons button:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+/* Specific custom styling that doesn't override PrimeNG components */
+.completed-row {
+  background-color: rgba(233, 233, 233, 0.5);
+}
+
+.completed-row .mission-title,
+.completed-row .habit-title {
+  text-decoration: line-through;
+  color: var(--surface-600);
+}
+
+.priority-badge, .frequency-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.dropdown-up {
+  transform-origin: bottom !important;
+  top: auto !important;
+  bottom: 100% !important;
+}
+
+.detail-item {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.detail-value {
+  font-size: 1rem;
+}
+
+:host ::ng-deep .p-sidebar {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+  background-color: #ffffff !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+:host ::ng-deep .p-sidebar-content {
+  padding: 1rem !important;
+}
+
+:host ::ng-deep .p-sidebar-close {
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+}
+
+:host ::ng-deep .p-sidebar-mask {
+  animation: none !important;
+  transition: none !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(2px);
+}
+
+:host ::ng-deep .minimalist-sidebar.p-sidebar {
+  border: none !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15) !important;
+  background-color: #ffffff !important;
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+:host ::ng-deep .minimalist-sidebar .p-sidebar-header {
+  padding: 0.75rem 1rem !important;
+  background-color: #f8f9fa !important;
+  border-bottom: 1px solid #e9ecef !important;
+}
+
+:host ::ng-deep .minimalist-sidebar .p-sidebar-content {
+  padding: 1rem !important;
+}
+
+:host ::ng-deep .minimalist-sidebar .p-sidebar-close {
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  color: #6c757d !important;
+}
+
+:host ::ng-deep .minimalist-sidebar .p-sidebar-close:hover {
+  background-color: #e9ecef !important;
+  color: #343a40 !important;
+}
+
+:host ::ng-deep .p-sidebar-right {
+  transform: translateX(0) !important;
+}
+
+:host ::ng-deep .p-sidebar-left {
+  transform: translateX(0) !important;
+}
+
+:host ::ng-deep .p-component-overlay {
+  transition: none !important;
+}
+
+.sidebar-header {
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar-header h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.sidebar-content {
+  font-size: 0.95rem;
+}
