@@ -27,6 +27,16 @@
             </div>
             <p-progressBar [value]="getProgressPercentage()" [showValue]="false" styleClass="level-progress"></p-progressBar>
           </div>
+          <div class="chart-container mt-1" style="background-color: #f5f5f5;">
+            <canvas
+              baseChart
+              [datasets]="radarChartData"
+              [labels]="radarChartLabels"
+              [type]="radarChartType"
+              class="radar-chart"
+            >
+            </canvas>
+          </div>
         </div>
       </p-card>
     </div>

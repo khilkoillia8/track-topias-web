@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import {BaseChartDirective} from "ng2-charts";
 import { PrimeTemplate, MessageService } from "primeng/api";
 import { Level } from "../../shared/auth/models/level.model";
 import { MainHeaderComponent } from "../../shared/main-header/main-header.component";
@@ -16,6 +17,7 @@ import { UserService } from '../../shared/auth/services/user-service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProgressBarModule } from 'primeng/progressbar';
+import {StatisticsService} from "../../shared/statistics/services/statistics.service";
 
 @Component({
   selector: 'app-home-page',
@@ -27,7 +29,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     CommonModule,
     ToastModule,
     CheckboxModule,
-    ProgressBarModule
+    ProgressBarModule,
+    BaseChartDirective
   ],
   providers: [MessageService],
   templateUrl: './home-page.component.html',
@@ -36,15 +39,36 @@ import { ProgressBarModule } from 'primeng/progressbar';
 export class HomePageComponent implements OnInit, OnDestroy {
   user: User | null = null;
   todayMissions: MissionDto[] = [];
+  radarChartLabels: string[] = [];
   todayHabits: HabitDto[] = [];
   userLevel: Level | null = null;
   loading = {
     level: false
   };
+
+  public radarChartData = [
+    {
+      data: [65, 59, 90, 81, 56, 55, 40],
+      label: 'Habits',
+      backgroundColor: 'rgba(65, 105, 225, 0.3)',
+      borderColor: '#4169e1',
+    },
+    {
+      data: [28, 48, 40, 19, 96, 27, 100],
+      label: 'Tasks',
+      backgroundColor: 'rgba(255, 99, 132, 0.3)',
+      borderColor: '#ff6384',
+    },
+  ];
+
+  public radarChartType = 'radar';
+
+
   private destroy$ = new Subject<void>();
   
   constructor(
     private authService: AuthService,
+    private statisticsService: StatisticsService,
     private missionService: MissionService,
     private habitService: HabitService,
     private userService: UserService,
@@ -62,6 +86,57 @@ export class HomePageComponent implements OnInit, OnDestroy {
     });
     
     this.loadTodaysTasks();
+    this.loadStatistics();
+  }
+
+  private loadStatistics() {
+    this.statisticsService.getUserStatistics().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (statistics) => {
+        const uniqueTopics = [
+          ...new Set([
+            ...statistics.habitsByTopic.map(h => h.topicName),
+            ...statistics.missionsByTopic.map(m => m.topicName)
+          ])
+        ];
+
+        const habitsData = uniqueTopics.map(topic => {
+          const habit = statistics.habitsByTopic.find(h => h.topicName === topic);
+          return habit ? habit.completedCount : 0;
+        });
+
+        const tasksData = uniqueTopics.map(topic => {
+          const mission = statistics.missionsByTopic.find(m => m.topicName === topic);
+          return mission ? mission.completedCount : 0;
+        });
+
+        this.radarChartData = [
+          {
+            data: habitsData,
+            label: 'Habits',
+            backgroundColor: 'rgba(65, 105, 225, 0.3)',
+            borderColor: '#4169e1',
+          },
+          {
+            data: tasksData,
+            label: 'Tasks',
+            backgroundColor: 'rgba(255, 99, 132, 0.3)',
+            borderColor: '#ff6384',
+          },
+        ];
+
+        this.radarChartLabels = uniqueTopics;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Помилка',
+          detail: 'Не вдалося завантажити рівень користувача'
+        });
+        console.error('Error loading user level', err);
+      }
+    });
   }
   
   ngOnDestroy() {

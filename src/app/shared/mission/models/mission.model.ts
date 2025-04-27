@@ -1,3 +1,5 @@
+import { TopicDto } from '../../topic/models/topic.model';
+
 export interface MissionDto {
   id: number;
   title: string;
@@ -5,6 +7,7 @@ export interface MissionDto {
   dueDate: Date;
   priority: string;
   completed: boolean;
+  topics?: TopicDto[];
   createdAt?: Date;
   updatedAt?: Date;
   userId?: number;
@@ -16,4 +19,5 @@ export interface MissionCreationDto {
   dueDate: Date;
   priority: string;
   completed?: boolean;
+  topicIds?: number[];
 }

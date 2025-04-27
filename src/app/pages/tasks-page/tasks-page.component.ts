@@ -18,10 +18,13 @@ import {SidebarModule} from 'primeng/sidebar';
 import {DividerModule} from 'primeng/divider';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {ColorPickerModule} from 'primeng/colorpicker';
 import { HabitService } from '../../shared/habit/services/habit.service';
 import { MissionService } from '../../shared/mission/services/mission.service';
+import { TopicService } from '../../shared/topic/services/topic.service';
 import { HabitDto, HabitCreationDto } from '../../shared/habit/models/habit.model';
 import { MissionDto, MissionCreationDto } from '../../shared/mission/models/mission.model';
+import { TopicDto, TopicCreationDto } from '../../shared/topic/models/topic.model';
 
 @Component({
   selector: 'app-tasks-page',
@@ -45,7 +48,8 @@ import { MissionDto, MissionCreationDto } from '../../shared/mission/models/miss
     SidebarModule,
     DividerModule,
     SelectButtonModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ColorPickerModule
   ],
   providers: [MessageService],
   templateUrl: './tasks-page.component.html',
@@ -54,7 +58,9 @@ import { MissionDto, MissionCreationDto } from '../../shared/mission/models/miss
 export class TasksPageComponent implements OnInit {
   missionDialogVisible: boolean = false;
   habitDialogVisible: boolean = false;
+  topicDialogVisible: boolean = false;
   isEditing: boolean = false;
+  isEditingTopic: boolean = false;
   editingType: 'mission' | 'habit' | null = null;
   activeTab: number = 0;
 
@@ -65,6 +71,7 @@ export class TasksPageComponent implements OnInit {
 
   missions: MissionDto[] = [];
   habits: HabitDto[] = [];
+  topics: TopicDto[] = [];
 
   priorityOptions = [
     {label: 'Низький', value: 'low'},
@@ -84,12 +91,14 @@ export class TasksPageComponent implements OnInit {
 
   missionForm: FormGroup;
   habitForm: FormGroup;
+  topicForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
     private habitService: HabitService,
-    private missionService: MissionService
+    private missionService: MissionService,
+    private topicService: TopicService
   ) {
     this.missionForm = this.fb.group({
       id: [null],
@@ -97,7 +106,8 @@ export class TasksPageComponent implements OnInit {
       description: [''],
       dueDate: [new Date(), Validators.required],
       priority: ['medium', Validators.required],
-      completed: [false]
+      completed: [false],
+      topicIds: [[], Validators.required]
     });
 
     this.habitForm = this.fb.group({
@@ -105,7 +115,14 @@ export class TasksPageComponent implements OnInit {
       title: ['', Validators.required],
       description: [''],
       weekdays: [[], Validators.required],
-      completed: [false]
+      completed: [false],
+      topicIds: [[], Validators.required]
+    });
+
+    this.topicForm = this.fb.group({
+      id: [null],
+      name: ['', Validators.required],
+      color: ['#1976D2', Validators.required]
     });
   }
 
@@ -116,6 +133,23 @@ export class TasksPageComponent implements OnInit {
   loadData() {
     this.loadMissions();
     this.loadHabits();
+    this.loadTopics();
+  }
+
+  loadTopics() {
+    this.topicService.getAllTopics().subscribe({
+      next: (topics) => {
+        this.topics = topics;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Помилка',
+          detail: 'Не вдалося завантажити теми'
+        });
+        console.error('Error loading topics', err);
+      }
+    });
   }
 
   openMissionSidebar(mission: MissionDto, event: MouseEvent) {
@@ -175,7 +209,8 @@ export class TasksPageComponent implements OnInit {
       description: '',
       dueDate: new Date(),
       priority: 'medium',
-      completed: false
+      completed: false,
+      topicIds: []
     });
     this.missionDialogVisible = true;
   }
@@ -188,7 +223,8 @@ export class TasksPageComponent implements OnInit {
       title: '',
       description: '',
       weekdays: [],
-      completed: false
+      completed: false,
+      topicIds: []
     });
     this.habitDialogVisible = true;
   }
@@ -196,8 +232,12 @@ export class TasksPageComponent implements OnInit {
   openEditMissionDialog(mission: MissionDto) {
     this.isEditing = true;
     this.editingType = 'mission';
+    
+    const topicIds = mission.topics ? mission.topics.map(topic => topic.id) : [];
+    
     this.missionForm.patchValue({
-      ...mission
+      ...mission,
+      topicIds: topicIds
     });
     this.missionDialogVisible = true;
   }
@@ -205,9 +245,13 @@ export class TasksPageComponent implements OnInit {
   openEditHabitDialog(habit: HabitDto) {
     this.isEditing = true;
     this.editingType = 'habit';
+    
+    const topicIds = habit.topics ? habit.topics.map(topic => topic.id) : [];
+    
     this.habitForm.patchValue({
       ...habit,
-      weekdays: habit.weekdays || []
+      weekdays: habit.weekdays || [],
+      topicIds: topicIds
     });
     this.habitDialogVisible = true;
   }
@@ -228,7 +272,8 @@ export class TasksPageComponent implements OnInit {
       description: formData.description,
       dueDate: formData.dueDate,
       priority: formData.priority,
-      completed: formData.completed
+      completed: formData.completed,
+      topicIds: formData.topicIds
     };
 
     if (this.isEditing) {
@@ -295,7 +340,8 @@ export class TasksPageComponent implements OnInit {
       title: formData.title,
       description: formData.description,
       weekdays: formData.weekdays,
-      completed: formData.completed
+      completed: formData.completed,
+      topicIds: formData.topicIds
     };
 
     if (this.isEditing) {
@@ -342,6 +388,88 @@ export class TasksPageComponent implements OnInit {
             detail: 'Не вдалося створити звичку'
           });
           console.error('Error creating habit', err);
+        }
+      });
+    }
+  }
+
+  openNewTopicDialog() {
+    this.isEditingTopic = false;
+    this.topicForm.reset({
+      id: null,
+      name: '',
+      color: '#1976D2'
+    });
+    this.topicDialogVisible = true;
+  }
+
+  openEditTopicDialog(topic: TopicDto) {
+    this.isEditingTopic = true;
+    this.topicForm.patchValue({
+      id: topic.id,
+      name: topic.name,
+      color: topic.color
+    });
+    this.topicDialogVisible = true;
+  }
+
+  saveTopic() {
+    if (this.topicForm.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Помилка',
+        detail: 'Будь ласка, заповніть всі обов\'язкові поля'
+      });
+      return;
+    }
+
+    const formData = this.topicForm.value;
+    const topicData: TopicCreationDto = {
+      name: formData.name,
+      color: formData.color
+    };
+
+    if (this.isEditingTopic) {
+      this.topicService.updateTopic(formData.id, topicData).subscribe({
+        next: (updatedTopic) => {
+          const index = this.topics.findIndex(t => t.id === updatedTopic.id);
+          if (index !== -1) {
+            this.topics[index] = updatedTopic;
+          }
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Успішно',
+            detail: 'Тему успішно оновлено'
+          });
+          this.topicDialogVisible = false;
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Помилка',
+            detail: 'Не вдалося оновити тему'
+          });
+          console.error('Error updating topic', err);
+        }
+      });
+    } else {
+      this.topicService.createTopic(topicData).subscribe({
+        next: (newTopic) => {
+          this.topics.push(newTopic);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Успішно',
+            detail: 'Тему успішно створено'
+          });
+          this.topicDialogVisible = false;
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Помилка',
+            detail: 'Не вдалося створити тему'
+          });
+          console.error('Error creating topic', err);
         }
       });
     }

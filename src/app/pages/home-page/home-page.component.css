@@ -68,3 +68,29 @@
 .form-check-input {
   cursor: pointer;
 }
+
+.chart-container {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.radar-chart {
+  display: block;
+  margin: auto;
+  max-width: 500px;
+}
+
+.radar-chart canvas {
+  border-radius: 8px;
+}
+
+.radarChartData-1 {
+  background-color: rgba(65, 105, 225, 0.3);
+  border-color: #4169e1;
+}
+
+.radarChartData-2 {
+  background-color: rgba(255, 99, 132, 0.3);
+  border-color: #ff6384;
+}

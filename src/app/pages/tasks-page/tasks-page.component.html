@@ -40,6 +40,13 @@
                 </td>
                 <td>
                   <span class="mission-title fw-medium">{{ mission.title }}</span>
+                  <div class="mt-1">
+                    <span *ngFor="let topic of mission.topics" class="topic-badge me-1" 
+                          [style.background-color]="topic.color + '30'" 
+                          [style.color]="topic.color">
+                      {{ topic.name }}
+                    </span>
+                  </div>
                 </td>
                 <td>
                   <span class="priority-badge" [ngClass]="getPriorityClass(mission.priority)">{{ mission.priority }}</span>
@@ -84,6 +91,13 @@
                 </td>
                 <td>
                   <span class="habit-title fw-medium">{{ habit.title }}</span>
+                  <div class="mt-1">
+                    <span *ngFor="let topic of habit.topics" class="topic-badge me-1" 
+                          [style.background-color]="topic.color + '30'" 
+                          [style.color]="topic.color">
+                      {{ topic.name }}
+                    </span>
+                  </div>
                 </td>
                 <td>
                   <span class="frequency-badge">{{ habit.frequency }}</span>
@@ -140,6 +154,16 @@
           <span class="detail-label">Опис:</span>
           <div class="detail-value">{{ selectedMission.description }}</div>
         </div>
+        <div class="detail-item" *ngIf="selectedMission.topics && selectedMission.topics.length > 0">
+          <span class="detail-label">Теми:</span>
+          <div class="detail-value">
+            <span *ngFor="let topic of selectedMission.topics" class="topic-badge me-1" 
+                  [style.background-color]="topic.color + '30'" 
+                  [style.color]="topic.color">
+              {{ topic.name }}
+            </span>
+          </div>
+        </div>
       </div>
     </ng-container>
   </p-sidebar>
@@ -171,6 +195,16 @@
         <div class="detail-item" *ngIf="selectedHabit.description">
           <span class="detail-label">Опис:</span>
           <div class="detail-value">{{ selectedHabit.description }}</div>
+        </div>
+        <div class="detail-item" *ngIf="selectedHabit.topics && selectedHabit.topics.length > 0">
+          <span class="detail-label">Теми:</span>
+          <div class="detail-value">
+            <span *ngFor="let topic of selectedHabit.topics" class="topic-badge me-1" 
+                  [style.background-color]="topic.color + '30'" 
+                  [style.color]="topic.color">
+              {{ topic.name }}
+            </span>
+          </div>
         </div>
       </div>
     </ng-container>
@@ -232,6 +266,43 @@
             </div>
           </div>
           
+          <div class="field">
+            <div class="p-float-label d-flex flex-column">
+              <label for="mission-topics">Теми</label>
+              <div class="d-flex align-items-center">
+                <p-multiSelect id="mission-topics"
+                               appendTo="body"
+                               [options]="topics" 
+                               formControlName="topicIds"
+                               optionLabel="name"
+                               optionValue="id"
+                               display="chip"
+                               defaultLabel="Виберіть теми"
+                               styleClass="w-100 me-2"
+                               [showToggleAll]="false"
+                               ariaFilterLabel="Пошук">
+                  <ng-template let-topic pTemplate="item">
+                    <div class="d-flex align-items-center">
+                      <span class="color-dot me-2" [style.background-color]="topic.color"></span>
+                      <span>{{ topic.name }}</span>
+                    </div>
+                  </ng-template>
+                  <ng-template let-topic pTemplate="selectedItem">
+                    <div class="d-flex align-items-center">
+                      <span class="color-dot me-1" [style.background-color]="topic.color"></span>
+                      <span>{{ topic.name }}</span>
+                    </div>
+                  </ng-template>
+                </p-multiSelect>
+                <button pButton type="button" icon="pi pi-plus" class="p-button-outlined" 
+                        (click)="openNewTopicDialog()"></button>
+              </div>
+            </div>
+            <small class="p-error" *ngIf="missionForm.get('topicIds')?.invalid && missionForm.get('topicIds')?.touched">
+              Оберіть хоча б одну тему
+            </small>
+          </div>
+
           <div class="field-checkbox" *ngIf="isEditing && editingType === 'mission'">
             <p-checkbox formControlName="completed" [binary]="true" inputId="mission-completed"></p-checkbox>
             <label for="mission-completed" class="ml-2">Позначити як виконане</label>
@@ -296,6 +367,43 @@
               </small>
             </div>
           </div>
+
+          <div class="field">
+            <div class="p-float-label d-flex flex-column">
+              <label for="habit-topics">Теми</label>
+              <div class="d-flex align-items-center">
+                <p-multiSelect id="habit-topics"
+                               appendTo="body"
+                               [options]="topics" 
+                               formControlName="topicIds"
+                               optionLabel="name"
+                               optionValue="id"
+                               display="chip"
+                               defaultLabel="Виберіть теми"
+                               styleClass="w-100 me-2"
+                               [showToggleAll]="false"
+                               ariaFilterLabel="Пошук">
+                  <ng-template let-topic pTemplate="item">
+                    <div class="d-flex align-items-center">
+                      <span class="color-dot me-2" [style.background-color]="topic.color"></span>
+                      <span>{{ topic.name }}</span>
+                    </div>
+                  </ng-template>
+                  <ng-template let-topic pTemplate="selectedItem">
+                    <div class="d-flex align-items-center">
+                      <span class="color-dot me-1" [style.background-color]="topic.color"></span>
+                      <span>{{ topic.name }}</span>
+                    </div>
+                  </ng-template>
+                </p-multiSelect>
+                <button pButton type="button" icon="pi pi-plus" class="p-button-outlined" 
+                        (click)="openNewTopicDialog()"></button>
+              </div>
+            </div>
+            <small class="p-error" *ngIf="habitForm.get('topicIds')?.invalid && habitForm.get('topicIds')?.touched">
+              Оберіть хоча б одну тему
+            </small>
+          </div>
           
           <div class="field-checkbox" *ngIf="isEditing && editingType === 'habit'">
             <p-checkbox formControlName="completed" [binary]="true" inputId="habit-completed"></p-checkbox>
@@ -309,6 +417,44 @@
       <div class="flex justify-content-end gap-2">
         <p-button label="Скасувати" icon="pi pi-times" styleClass="p-button-text" (click)="habitDialogVisible = false"></p-button>
         <p-button label="Зберегти" icon="pi pi-check" styleClass="p-button-primary" (click)="saveHabit()"></p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog [(visible)]="topicDialogVisible" 
+            [header]="isEditingTopic ? 'Редагування теми' : 'Нова тема'" 
+            [modal]="true" 
+            [style]="{width: '450px'}" 
+            [draggable]="false" 
+            [resizable]="false"
+            styleClass="p-dialog-header-primary">
+    <div class="p-3">
+      <p-card [style]="{'box-shadow': 'none'}">
+        <form [formGroup]="topicForm" class="p-fluid">
+          <div class="field">
+            <div class="p-float-label d-flex flex-column">
+              <label for="topic-name">Назва</label>
+              <input id="topic-name" type="text" pInputText formControlName="name" />
+            </div>
+            <small class="p-error" *ngIf="topicForm.get('name')?.invalid && topicForm.get('name')?.touched">
+              Назва обов'язкова
+            </small>
+          </div>
+          
+          <div class="field">
+            <div class="p-float-label d-flex flex-column">
+              <label for="topic-color">Колір</label>
+              <p-colorPicker id="topic-color" appendTo="body" formControlName="color" [inline]="false"></p-colorPicker>
+            </div>
+          </div>
+        </form>
+      </p-card>
+    </div>
+    
+    <ng-template pTemplate="footer">
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Скасувати" icon="pi pi-times" styleClass="p-button-text" (click)="topicDialogVisible = false"></p-button>
+        <p-button label="Зберегти" icon="pi pi-check" styleClass="p-button-primary" (click)="saveTopic()"></p-button>
       </div>
     </ng-template>
   </p-dialog>
