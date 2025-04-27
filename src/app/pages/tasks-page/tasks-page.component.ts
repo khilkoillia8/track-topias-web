@@ -429,6 +429,11 @@ export class TasksPageComponent implements OnInit {
       color: formData.color
     };
 
+    const currentMissionTopics = this.missionForm.get('topicIds')?.value || [];
+    const currentHabitTopics = this.habitForm.get('topicIds')?.value || [];
+    
+    this.topicDialogVisible = false;
+
     if (this.isEditingTopic) {
       this.topicService.updateTopic(formData.id, topicData).subscribe({
         next: (updatedTopic) => {
@@ -441,7 +446,8 @@ export class TasksPageComponent implements OnInit {
             summary: 'Успішно',
             detail: 'Тему успішно оновлено'
           });
-          this.topicDialogVisible = false;
+          
+          this.topics = [...this.topics];
         },
         error: (err) => {
           this.messageService.add({
@@ -455,13 +461,19 @@ export class TasksPageComponent implements OnInit {
     } else {
       this.topicService.createTopic(topicData).subscribe({
         next: (newTopic) => {
-          this.topics.push(newTopic);
+          this.topics = [...this.topics, newTopic];
+          
+          if (this.missionDialogVisible) {
+            this.missionForm.patchValue({ topicIds: currentMissionTopics });
+          } else if (this.habitDialogVisible) {
+            this.habitForm.patchValue({ topicIds: currentHabitTopics });
+          }
+          
           this.messageService.add({
             severity: 'success',
             summary: 'Успішно',
             detail: 'Тему успішно створено'
           });
-          this.topicDialogVisible = false;
         },
         error: (err) => {
           this.messageService.add({
