@@ -15,6 +15,10 @@ export class MissionService {
   getAllMissions(): Observable<MissionDto[]> {
     return this.http.get<MissionDto[]>(this.apiUrl);
   }
+  
+  getAllMissionsByUserId(id: number): Observable<MissionDto[]> {
+    return this.http.get<MissionDto[]>(`${this.apiUrl}/user/${id}`);
+  }
 
   getMissionById(id: number): Observable<MissionDto> {
     return this.http.get<MissionDto>(`${this.apiUrl}/${id}`);

@@ -20,3 +20,26 @@ export interface UserStatisticsDto {
   habitsByTopic: CompletedHabitsByTopicDto[];
   missionsByTopic: CompletedMissionsByTopicDto[];
 }
+
+export interface UserHabitInstanceStatisticsDto {
+  userId: number;
+  username: string;
+  totalInstances: number;
+  completedInstances: number;
+  completionRate: number;
+}
+
+export interface HabitInstanceStatisticsDto {
+  habitId: number;
+  habitName: string;
+  totalInstances: number;
+  completedInstances: number;
+  completionRate: number;
+}
+
+export interface UserRatingDto {
+  userId: number;
+  username: string;
+  value: number;
+  rank: number;
+}

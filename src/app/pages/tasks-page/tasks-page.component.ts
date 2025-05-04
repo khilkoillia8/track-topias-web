@@ -25,6 +25,7 @@ import { TopicService } from '../../shared/topic/services/topic.service';
 import { HabitDto, HabitCreationDto } from '../../shared/habit/models/habit.model';
 import { MissionDto, MissionCreationDto } from '../../shared/mission/models/mission.model';
 import { TopicDto, TopicCreationDto } from '../../shared/topic/models/topic.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-tasks-page',
@@ -49,7 +50,8 @@ import { TopicDto, TopicCreationDto } from '../../shared/topic/models/topic.mode
     DividerModule,
     SelectButtonModule,
     MultiSelectModule,
-    ColorPickerModule
+    ColorPickerModule,
+    RouterLink
   ],
   providers: [MessageService],
   templateUrl: './tasks-page.component.html',

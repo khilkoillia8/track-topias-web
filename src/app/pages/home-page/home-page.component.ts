@@ -1,22 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
-import { PrimeTemplate, MessageService } from "primeng/api";
-import { Level } from "../../shared/auth/models/level.model";
-import { MainHeaderComponent } from "../../shared/main-header/main-header.component";
-import { AuthService } from '../../shared/auth/services/auth.service';
-import { User } from '../../shared/auth/models/auth.model';
-import { Card } from 'primeng/card';
-import { MissionService } from '../../shared/mission/services/mission.service';
-import { HabitService } from '../../shared/habit/services/habit.service';
-import { MissionDto, MissionCreationDto } from '../../shared/mission/models/mission.model';
-import { HabitDto, HabitCreationDto } from '../../shared/habit/models/habit.model';
-import { CommonModule } from '@angular/common';
-import { ToastModule } from 'primeng/toast';
-import { CheckboxModule } from 'primeng/checkbox';
-import { UserService } from '../../shared/auth/services/user-service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ProgressBarModule } from 'primeng/progressbar';
+import {MessageService, PrimeTemplate} from "primeng/api";
+import {Card} from 'primeng/card';
+import {CheckboxModule} from 'primeng/checkbox';
+import {ProgressBarModule} from 'primeng/progressbar';
+import {ToastModule} from 'primeng/toast';
+import {forkJoin, Subject, switchMap} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {User} from '../../shared/auth/models/auth.model';
+import {Level} from "../../shared/auth/models/level.model";
+import {AuthService} from '../../shared/auth/services/auth.service';
+import {UserService} from '../../shared/auth/services/user-service';
+import {HabitInstanceDto} from '../../shared/habit-instance/models/habit-instance.model';
+import {HabitInstanceService} from '../../shared/habit-instance/services/habit-instance.service';
+import {HabitService} from '../../shared/habit/services/habit.service';
+import {MainHeaderComponent} from "../../shared/main-header/main-header.component";
+import {MissionCreationDto, MissionDto} from '../../shared/mission/models/mission.model';
+import {MissionService} from '../../shared/mission/services/mission.service';
 import {StatisticsService} from "../../shared/statistics/services/statistics.service";
 
 @Component({
@@ -40,7 +41,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   user: User | null = null;
   todayMissions: MissionDto[] = [];
   radarChartLabels: string[] = [];
-  todayHabits: HabitDto[] = [];
+  todayHabitInstances: HabitInstanceDto[] = [];
   userLevel: Level | null = null;
   loading = {
     level: false
@@ -61,8 +62,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public radarChartType = 'radar';
-
+  public radarChartType: 'radar' = 'radar';
 
   private destroy$ = new Subject<void>();
   
@@ -71,6 +71,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     private statisticsService: StatisticsService,
     private missionService: MissionService,
     private habitService: HabitService,
+    private habitInstanceService: HabitInstanceService,
     private userService: UserService,
     private messageService: MessageService
   ) {}
@@ -90,7 +91,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   private loadStatistics() {
-    this.statisticsService.getUserStatistics().pipe(
+    this.statisticsService.getMainUserStatistics().pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (statistics) => {
@@ -164,7 +165,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   loadTodaysTasks() {
     this.loadTodaysMissions();
-    this.loadTodaysHabits();
+    this.loadTodaysHabitInstances();
   }
   
   loadTodaysMissions() {
@@ -190,25 +191,29 @@ export class HomePageComponent implements OnInit, OnDestroy {
     });
   }
   
-  loadTodaysHabits() {
+  loadTodaysHabitInstances() {
     this.habitService.getAllHabits().pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (habits) => {
-        const today = new Date();
-        const dayOfWeek = today.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
-        
-        this.todayHabits = habits.filter(habit => 
-          habit.weekdays && habit.weekdays.includes(dayOfWeek)
+      takeUntil(this.destroy$),
+      switchMap(habits => {
+        return forkJoin(
+          habits.map(habit => this.habitService.regenerateHabitInstances(habit.id))
         );
+      }),
+      switchMap(() => {
+        const today = new Date();
+        return this.habitInstanceService.getInstancesByDate(today);
+      })
+    ).subscribe({
+      next: (instances) => {
+        this.todayHabitInstances = instances;
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Помилка',
-          detail: 'Не вдалося завантажити звички'
+          detail: 'Не вдалося завантажити екземпляри звичок'
         });
-        console.error('Error loading habits', err);
+        console.error('Error loading habit instances', err);
       }
     });
   }
@@ -242,30 +247,29 @@ export class HomePageComponent implements OnInit, OnDestroy {
     });
   }
   
-  toggleHabitComplete(habit: HabitDto) {
-    habit.completed = !habit.completed;
-    
-    const updatedHabit: HabitCreationDto = {
-      title: habit.title,
-      description: habit.description,
-      weekdays: habit.weekdays,
-      completed: habit.completed
-    };
-    
-    this.habitService.updateHabit(habit.id, updatedHabit).subscribe({
-      next: () => {
+  toggleHabitInstanceComplete(instance: HabitInstanceDto) {
+    this.habitInstanceService.completeInstance(instance.id).subscribe({
+      next: (updatedInstance) => {
+        const index = this.todayHabitInstances.findIndex(i => i.id === instance.id);
+        if (index !== -1) {
+          this.todayHabitInstances[index] = updatedInstance;
+        }
+        
         if (this.user && this.user.id) {
           this.loadUserLevel(this.user.id);
+          
+          if (instance.habitId) {
+            this.habitService.updateHabitStreak(instance.habitId).subscribe();
+          }
         }
       },
       error: (err) => {
-        habit.completed = !habit.completed;
         this.messageService.add({
           severity: 'error',
           summary: 'Помилка',
-          detail: 'Не вдалося оновити статус звички'
+          detail: 'Не вдалося оновити статус екземпляра звички'
         });
-        console.error('Error updating habit status', err);
+        console.error('Error updating habit instance status', err);
       }
     });
   }

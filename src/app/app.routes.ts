@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router';
+import {HabitInstancesPageComponent} from "./pages/habit-instances-page/habit-instances-page.component";
 import {StartPageComponent} from "./pages/start/start-page/start-page.component";
 import {HomePageComponent} from './pages/home-page/home-page.component';
 import {RankingPageComponent} from './pages/ranking-page/ranking-page.component';
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {path: 'ranking', component: RankingPageComponent, canActivate: [authGuard]},
   {path: 'social', component: SocialPageComponent, canActivate: [authGuard]},
   {path: 'task', component: TasksPageComponent, canActivate: [authGuard]},
+  {path: 'habit-instances', component: HabitInstancesPageComponent, canActivate: [authGuard]},
   {
     path: '',
     component: HomePageComponent,

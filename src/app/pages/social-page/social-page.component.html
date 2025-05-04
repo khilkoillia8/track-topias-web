@@ -1,1 +1,229 @@
 <app-main-header></app-main-header>
+
+<div class="container-fluid mt-4">
+  <p-toast></p-toast>
+  
+  <div class="row">
+    <div class="col-12">
+      <h2 class="page-title text-white mb-4">Соціальна мережа</h2>
+      
+      <div *ngIf="loading" class="loading-container">
+        <div class="row">
+          <div class="col-md-4 mb-4" *ngFor="let i of [0,1,2,3,4,5]">
+            <div class="user-card-skeleton">
+              <p-skeleton height="220px" styleClass="mb-2"></p-skeleton>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!loading" class="row">
+        <div class="col-md-4 mb-4" *ngFor="let userWithLevel of users">
+          <p-card styleClass="user-card" (click)="showUserDetails(userWithLevel.user, userWithLevel.level)">
+            <div class="user-info">
+              <div class="d-flex align-items-center mb-3">
+                <p-avatar 
+                  icon="pi pi-user" 
+                  size="large" 
+                  [style]="{'background-color': '#4169e1'}" 
+                  shape="circle"
+                  class="me-3"
+                ></p-avatar>
+                <div>
+                  <h4 class="mb-1">{{ userWithLevel.user.username }}</h4>
+                  <span class="role-badge">{{ userWithLevel.user.role || 'Користувач' }}</span>
+                </div>
+              </div>
+              
+              <div class="user-details mb-3">
+                <p><strong>ID користувача:</strong> {{ userWithLevel.user.id }}</p>
+                <p><strong>Email:</strong> {{ userWithLevel.user.email }}</p>
+              </div>
+              
+              <!-- Level information -->
+              <div *ngIf="userWithLevel.level" class="level-info mt-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="level-badge">Рівень {{ userWithLevel.level.level }}</span>
+                  <span class="exp-text">{{ userWithLevel.level.score }} / {{ userWithLevel.level.scoreToNextLevel }} XP</span>
+                </div>
+                <p-progressBar [value]="getProgressPercentage(userWithLevel.level)" [showValue]="false" styleClass="level-progress"></p-progressBar>
+              </div>
+              
+              <div *ngIf="!userWithLevel.level" class="level-info mt-3">
+                <div class="empty-level">
+                  <span>Інформація про рівень недоступна</span>
+                </div>
+              </div>
+            </div>
+          </p-card>
+        </div>
+        
+        <div class="col-12" *ngIf="users.length === 0">
+          <div class="empty-message">
+            <p>Немає доступних користувачів для відображення</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- User Details Dialog -->
+<p-dialog 
+  [(visible)]="dialogVisible" 
+  [header]="selectedUser?.username || 'Деталі користувача'"
+  [modal]="true"
+  [style]="{ width: '90%', maxWidth: '1000px' }"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="user-detail-dialog">
+  
+  <div *ngIf="loadingUserDetails" class="dialog-loading">
+    <p-skeleton height="400px" styleClass="mb-2"></p-skeleton>
+  </div>
+  
+  <div *ngIf="!loadingUserDetails && selectedUser" class="user-detail-content">
+    <!-- User Header -->
+    <div class="user-header mb-4">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center">
+            <p-avatar 
+              icon="pi pi-user" 
+              size="xlarge" 
+              [style]="{'background-color': '#4169e1'}" 
+              shape="circle"
+              class="me-3"
+            ></p-avatar>
+            <div>
+              <h3 class="mb-1">{{ selectedUser.username }}</h3>
+              <span class="role-badge">{{ selectedUser.role || 'Користувач' }}</span>
+              <p class="mb-0 mt-2">{{ selectedUser.email }}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div *ngIf="selectedUserLevel" class="level-detail">
+            <h4>Прогрес</h4>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="level-badge">Рівень {{ selectedUserLevel.level }}</span>
+              <span class="exp-text">{{ selectedUserLevel.score }} / {{ selectedUserLevel.scoreToNextLevel }} XP</span>
+            </div>
+            <p-progressBar [value]="getProgressPercentage(selectedUserLevel)" [showValue]="false" styleClass="level-progress"></p-progressBar>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Statistics Summary -->
+    <div class="stats-summary mb-4">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-title">Завдання</div>
+            <div class="stat-value">{{ userStats.completedMissions }} / {{ userStats.totalMissions }}</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-title">Відсоток виконання</div>
+            <div class="stat-value">{{ userStats.totalMissions ? (userStats.completedMissions / userStats.totalMissions * 100).toFixed(0) : 0 }}%</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-title">Звички</div>
+            <div class="stat-value">{{ userStats.completedHabits }} / {{ userStats.totalHabits }}</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-title">Відсоток виконання</div>
+            <div class="stat-value">{{ userStats.totalHabits ? (userStats.completedHabits / userStats.totalHabits * 100).toFixed(0) : 0 }}%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tabs with more details -->
+    <p-tabView>
+      <!-- Statistics Tab -->
+      <p-tabPanel header="Статистика по темам">
+        <div class="chart-container">
+          <p-chart type="radar" [data]="chartData" [options]="chartOptions" height="400"></p-chart>
+        </div>
+      </p-tabPanel>
+      
+      <!-- Missions Tab -->
+      <p-tabPanel header="Завдання">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Статус</th>
+                <th>Назва</th>
+                <th>Пріоритет</th>
+                <th>Термін виконання</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mission of userMissions" [ngClass]="{'completed-row': mission.completed}">
+                <td>
+                  <i class="pi" [ngClass]="mission.completed ? 'pi-check-circle text-success' : 'pi-circle-fill text-muted'"></i>
+                </td>
+                <td [ngClass]="{'text-muted text-decoration-line-through': mission.completed}">{{ mission.title }}</td>
+                <td>
+                  <span class="priority-badge" [ngClass]="getMissionPriorityClass(mission.priority)">
+                    {{ mission.priority }}
+                  </span>
+                </td>
+                <td>{{ mission.dueDate | date:'mediumDate' }}</td>
+              </tr>
+              <tr *ngIf="userMissions.length === 0">
+                <td colspan="4" class="text-center">Немає доступних завдань</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </p-tabPanel>
+      
+      <!-- Habits Tab -->
+      <p-tabPanel header="Звички">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Статус</th>
+                <th>Назва</th>
+                <th>Частота</th>
+                <th>Опис</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let habit of userHabits" [ngClass]="{'completed-row': habit.completed}">
+                <td>
+                  <i class="pi" [ngClass]="habit.completed ? 'pi-check-circle text-success' : 'pi-circle-fill text-muted'"></i>
+                </td>
+                <td [ngClass]="{'text-muted text-decoration-line-through': habit.completed}">{{ habit.title }}</td>
+                <td>
+                  <span class="frequency-badge" [ngClass]="getFrequencyClass(habit.weekdays)">
+                    {{ formatWeekdays(habit.weekdays) }}
+                  </span>
+                </td>
+                <td>{{ habit.description || 'Без опису' }}</td>
+              </tr>
+              <tr *ngIf="userHabits.length === 0">
+                <td colspan="4" class="text-center">Немає доступних звичок</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-times" label="Закрити" (click)="dialogVisible = false"></p-button>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,125 @@
+<app-main-header></app-main-header>
+
+<div class="container-fluid mt-4">
+  <p-toast></p-toast>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0 text-white">Екземпляри звичок</h2>
+        <button pButton icon="pi pi-refresh" label="Оновити екземпляри" 
+                class="p-button-info" (click)="regenerateInstances()"></button>
+      </div>
+      
+      <p-card styleClass="mb-4">
+        <p-toolbar>
+          <div class="p-toolbar-group-start w-100">
+            <div class="row w-100">
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Дата</label>
+                <p-calendar [(ngModel)]="selectedDate" [showIcon]="true" 
+                          dateFormat="dd/mm/yy" styleClass="w-100"
+                          [showButtonBar]="true" (onSelect)="applyFilters()"></p-calendar>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Звичка</label>
+                <p-dropdown [options]="habits" [(ngModel)]="selectedHabitId"
+                          optionLabel="title" optionValue="id" 
+                          [showClear]="true" placeholder="Всі звички"
+                          styleClass="w-100" (onChange)="applyFilters()"></p-dropdown>
+              </div>
+              <div class="col-md-2 mb-3 d-flex flex-column">
+                <label class="form-label">Фільтр</label>
+                <div class="d-flex">
+                  <div class="form-check me-2">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="showCompleted"
+                          id="showCompleted" (change)="applyFilters()">
+                    <label class="form-check-label" for="showCompleted">
+                      Виконані
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="showPending"
+                          id="showPending" (change)="applyFilters()">
+                    <label class="form-check-label" for="showPending">
+                      Невиконані
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 mb-3 d-flex flex-column">
+                <label class="form-label">Пошук</label>
+                <div class="p-inputgroup">
+                  <input type="text" pInputText [(ngModel)]="searchQuery" placeholder="Пошук звичок...">
+                  <button type="button" pButton icon="pi pi-search" (click)="search()"></button>
+                </div>
+              </div>
+              <div class="col-md-1 mb-3 d-flex align-items-end">
+                <button pButton type="button" label="Скинути" 
+                      class="p-button-outlined w-100" (click)="resetFilters()"></button>
+              </div>
+            </div>
+          </div>
+        </p-toolbar>
+      </p-card>
+      
+      <p-table [value]="habitInstances" 
+              [loading]="loading"
+              styleClass="p-datatable-sm"
+              [rowHover]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem" class="text-center">Статус</th>
+            <th style="width: 20%">Назва звички</th>
+            <th style="width: 10rem">Дата</th>
+            <th style="width: 15%">Опис</th>
+            <th style="width: 12%">Дні тижня</th>
+            <th style="width: 12%">Серія</th>
+            <th style="width: 8%">Дії</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-instance>
+          <tr [ngClass]="{'completed-row': instance.completed}">
+            <td class="text-center">
+              <div class="form-check d-flex justify-content-center">
+                <input class="form-check-input" type="checkbox" 
+                      [checked]="instance.completed"
+                      [disabled]="instance.completed"
+                      (change)="toggleInstanceComplete(instance)">
+              </div>
+            </td>
+            <td>
+              <span class="habit-title fw-medium">{{ getHabitTitle(instance.habitId) }}</span>
+              <span *ngIf="instance.habit?.topics && instance.habit.topics.length > 0" class="ms-2">
+                <span *ngFor="let topic of instance.habit.topics" class="topic-badge me-1" 
+                      [style.background-color]="topic.color + '30'" 
+                      [style.color]="topic.color">
+                  {{ topic.name }}
+                </span>
+              </span>
+            </td>
+            <td>{{ instance.date | date:'mediumDate' }}</td>
+            <td class="description-cell">{{ getHabitDescription(instance.habitId) || 'Без опису' }}</td>
+            <td>{{ formatWeekdays(getHabitWeekdays(instance.habitId)) }}</td>
+            <td>{{ getStreakInfo(instance.habitId) }}</td>
+            <td *ngIf="!instance.completed">
+              <button pButton icon="pi pi-check" 
+                      class="p-button-sm p-button-success" 
+                      (click)="toggleInstanceComplete(instance)"></button>
+            </td>
+            <td *ngIf="instance.completed"></td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="text-center p-4">
+              <div class="empty-message">
+                <p>Екземплярів звичок не знайдено</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

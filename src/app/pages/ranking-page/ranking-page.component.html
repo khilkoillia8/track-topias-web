@@ -1,1 +1,329 @@
 <app-main-header></app-main-header>
+
+<div class="container-fluid mt-4">
+  <p-toast></p-toast>
+  
+  <div class="row">
+    <div class="col-12">
+      <h2 class="page-title text-white">Рейтинги користувачів</h2>
+      
+      <p-tabView>
+        <p-tabPanel header="Рейтинг за рівнем">
+          <p-card styleClass="ranking-card">
+            <div class="mb-3">
+              <div class="p-inputgroup">
+                <span class="me-1 p-inputgroup-addon">
+                  <i class="pi pi-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  pInputText 
+                  placeholder="Пошук користувача" 
+                  [(ngModel)]="levelSearchQuery"
+                  (input)="filterLevelRatings()"
+                />
+                <button 
+                  type="button" 
+                  pButton 
+                  icon="pi pi-times" 
+                  (click)="levelSearchQuery = ''; filterLevelRatings()" 
+                  *ngIf="levelSearchQuery"
+                ></button>
+              </div>
+            </div>
+            
+            <div *ngIf="loading.level" class="loading-container">
+              <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '50%'}"></p-progressBar>
+              <p class="text-center mt-2">Завантаження даних...</p>
+            </div>
+            
+            <p-table 
+              [value]="filteredLevelRatings" 
+              [tableStyle]="{'min-width': '50rem'}"
+              styleClass="p-datatable-sm p-datatable-striped"
+              [paginator]="filteredLevelRatings.length > 10" 
+              [rows]="10" 
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="{first} - {last} з {totalRecords} користувачів"
+              *ngIf="!loading.level"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 5rem" class="text-center">Ранг</th>
+                  <th>Користувач</th>
+                  <th style="width: 12rem">Рівень</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rating let-i="rowIndex">
+                <tr [ngClass]="{'current-user': isCurrentUser(rating.userId)}">
+                  <td class="text-center">
+                    <span class="rank-badge" [ngClass]="getRankClass(rating.rank)">{{ rating.rank }}</span>
+                  </td>
+                  <td>
+                    <div class="user-info">
+                      <p-avatar 
+                        icon="pi pi-user" 
+                        [style]="{'background-color': isCurrentUser(rating.userId) ? 'var(--primary-color)' : '#ccc'}" 
+                        shape="circle"
+                      ></p-avatar>
+                      <span class="ms-2">{{ rating.username }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="value-badge level-badge">{{ rating.value }}</span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" class="text-center p-4">
+                    <div class="empty-message">
+                      <p>Немає доступних даних для відображення</p>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-card>
+        </p-tabPanel>
+        
+        <p-tabPanel header="Рейтинг за завданнями">
+          <p-card styleClass="ranking-card">
+            <div class="mb-3">
+              <div class="p-inputgroup">
+                <span class="me-1 p-inputgroup-addon">
+                  <i class="pi pi-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  pInputText 
+                  placeholder="Пошук користувача" 
+                  [(ngModel)]="missionSearchQuery"
+                  (input)="filterMissionRatings()"
+                />
+                <button 
+                  type="button" 
+                  pButton 
+                  icon="pi pi-times" 
+                  (click)="missionSearchQuery = ''; filterMissionRatings()" 
+                  *ngIf="missionSearchQuery"
+                ></button>
+              </div>
+            </div>
+            
+            <div *ngIf="loading.missions" class="loading-container">
+              <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '50%'}"></p-progressBar>
+              <p class="text-center mt-2">Завантаження даних...</p>
+            </div>
+            
+            <p-table 
+              [value]="filteredMissionRatings" 
+              [tableStyle]="{'min-width': '50rem'}"
+              styleClass="p-datatable-sm p-datatable-striped"
+              [paginator]="filteredMissionRatings.length > 10" 
+              [rows]="10" 
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="{first} - {last} з {totalRecords} користувачів"
+              *ngIf="!loading.missions"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 5rem" class="text-center">Ранг</th>
+                  <th>Користувач</th>
+                  <th style="width: 12rem">Виконані завдання</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rating>
+                <tr [ngClass]="{'current-user': isCurrentUser(rating.userId)}">
+                  <td class="text-center">
+                    <span class="rank-badge" [ngClass]="getRankClass(rating.rank)">{{ rating.rank }}</span>
+                  </td>
+                  <td>
+                    <div class="user-info">
+                      <p-avatar 
+                        icon="pi pi-user" 
+                        [style]="{'background-color': isCurrentUser(rating.userId) ? 'var(--primary-color)' : '#ccc'}" 
+                        shape="circle"
+                      ></p-avatar>
+                      <span class="ms-2">{{ rating.username }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="value-badge mission-badge">{{ rating.value }}</span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" class="text-center p-4">
+                    <div class="empty-message">
+                      <p>Немає доступних даних для відображення</p>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-card>
+        </p-tabPanel>
+        
+        <p-tabPanel header="Рейтинг за стріками звичок">
+          <p-card styleClass="ranking-card">
+            <div class="mb-3">
+              <div class="p-inputgroup">
+                <span class="me-1 p-inputgroup-addon">
+                  <i class="pi pi-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  pInputText 
+                  placeholder="Пошук користувача" 
+                  [(ngModel)]="habitStreakSearchQuery"
+                  (input)="filterHabitStreakRatings()"
+                />
+                <button 
+                  type="button" 
+                  pButton 
+                  icon="pi pi-times" 
+                  (click)="habitStreakSearchQuery = ''; filterHabitStreakRatings()" 
+                  *ngIf="habitStreakSearchQuery"
+                ></button>
+              </div>
+            </div>
+            
+            <div *ngIf="loading.habitStreak" class="loading-container">
+              <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '50%'}"></p-progressBar>
+              <p class="text-center mt-2">Завантаження даних...</p>
+            </div>
+            
+            <p-table 
+              [value]="filteredHabitStreakRatings" 
+              [tableStyle]="{'min-width': '50rem'}"
+              styleClass="p-datatable-sm p-datatable-striped"
+              [paginator]="filteredHabitStreakRatings.length > 10" 
+              [rows]="10" 
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="{first} - {last} з {totalRecords} користувачів"
+              *ngIf="!loading.habitStreak"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 5rem" class="text-center">Ранг</th>
+                  <th>Користувач</th>
+                  <th style="width: 12rem">Найкращий стрік</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rating>
+                <tr [ngClass]="{'current-user': isCurrentUser(rating.userId)}">
+                  <td class="text-center">
+                    <span class="rank-badge" [ngClass]="getRankClass(rating.rank)">{{ rating.rank }}</span>
+                  </td>
+                  <td>
+                    <div class="user-info">
+                      <p-avatar 
+                        icon="pi pi-user" 
+                        [style]="{'background-color': isCurrentUser(rating.userId) ? 'var(--primary-color)' : '#ccc'}" 
+                        shape="circle"
+                      ></p-avatar>
+                      <span class="ms-2">{{ rating.username }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="value-badge streak-badge">{{ rating.value }} днів</span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" class="text-center p-4">
+                    <div class="empty-message">
+                      <p>Немає доступних даних для відображення</p>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-card>
+        </p-tabPanel>
+        
+        <p-tabPanel header="Рейтинг за виконанням звичок">
+          <p-card styleClass="ranking-card">
+            <div class="mb-3">
+              <div class="p-inputgroup">
+                <span class="me-1 p-inputgroup-addon">
+                  <i class="pi pi-search"></i>
+                </span>
+                <input
+                  type="text" 
+                  pInputText 
+                  placeholder="Пошук користувача" 
+                  [(ngModel)]="habitCompletionSearchQuery"
+                  (input)="filterHabitCompletionRatings()"
+                />
+                <button 
+                  type="button" 
+                  pButton 
+                  icon="pi pi-times" 
+                  (click)="habitCompletionSearchQuery = ''; filterHabitCompletionRatings()" 
+                  *ngIf="habitCompletionSearchQuery"
+                ></button>
+              </div>
+            </div>
+            
+            <div *ngIf="loading.habitCompletions" class="loading-container">
+              <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '50%'}"></p-progressBar>
+              <p class="text-center mt-2">Завантаження даних...</p>
+            </div>
+            
+            <p-table 
+              [value]="filteredHabitCompletionRatings" 
+              [tableStyle]="{'min-width': '50rem'}"
+              styleClass="p-datatable-sm p-datatable-striped"
+              [paginator]="filteredHabitCompletionRatings.length > 10" 
+              [rows]="10" 
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="{first} - {last} з {totalRecords} користувачів"
+              *ngIf="!loading.habitCompletions"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 5rem" class="text-center">Ранг</th>
+                  <th>Користувач</th>
+                  <th style="width: 12rem">Виконані звички</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rating>
+                <tr [ngClass]="{'current-user': isCurrentUser(rating.userId)}">
+                  <td class="text-center">
+                    <span class="rank-badge" [ngClass]="getRankClass(rating.rank)">{{ rating.rank }}</span>
+                  </td>
+                  <td>
+                    <div class="user-info">
+                      <p-avatar 
+                        icon="pi pi-user" 
+                        [style]="{'background-color': isCurrentUser(rating.userId) ? 'var(--primary-color)' : '#ccc'}" 
+                        shape="circle"
+                      ></p-avatar>
+                      <span class="ms-2">{{ rating.username }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="value-badge habit-badge">{{ rating.value }}</span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" class="text-center p-4">
+                    <div class="empty-message">
+                      <p>Немає доступних даних для відображення</p>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-card>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+</div>

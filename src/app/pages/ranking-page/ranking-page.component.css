@@ -1,0 +1,244 @@
+.current-user {
+  background-color: rgba(var(--primary-color-rgb), 0.2) !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-weight: bold;
+  background-color: #2a2a2a;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+.rank-first {
+  background: linear-gradient(145deg, #b8860b, #ffd700);
+  color: #222;
+  font-size: 1.1rem;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
+}
+
+.rank-second {
+  background: linear-gradient(145deg, #8c8c8c, #c0c0c0);
+  color: #222;
+  font-size: 1.05rem;
+  width: 34px;
+  height: 34px;
+  box-shadow: 0 2px 4px rgba(192, 192, 192, 0.5);
+}
+
+.rank-third {
+  background: linear-gradient(145deg, #a0522d, #cd7f32);
+  color: #fff;
+  font-size: 1rem;
+  width: 32px;
+  height: 32px;
+  box-shadow: 0 2px 4px rgba(205, 127, 50, 0.5);
+}
+
+.value-badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.level-badge {
+  background-color: rgba(63, 81, 181, 0.2);
+  color: #7986cb;
+  border: 1px solid rgba(63, 81, 181, 0.3);
+}
+
+.mission-badge {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #81c784;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.streak-badge {
+  background-color: rgba(255, 152, 0, 0.2);
+  color: #ffb74d;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.habit-badge {
+  background-color: rgba(156, 39, 176, 0.2);
+  color: #ba68c8;
+  border: 1px solid rgba(156, 39, 176, 0.3);
+}
+
+.empty-message {
+  text-align: center;
+  padding: 2rem;
+  color: #a0a0a0;
+  font-style: italic;
+  background-color: rgba(32, 32, 32, 0.6);
+  border-radius: 8px;
+}
+
+:host ::ng-deep .p-tabview-nav {
+  background-color: rgba(32, 32, 32, 0.6);
+  border-radius: 8px 8px 0 0;
+  border: none !important;
+  backdrop-filter: blur(5px);
+}
+
+:host ::ng-deep .p-tabview-nav li .p-tabview-nav-link {
+  background: transparent;
+  color: #e0e0e0;
+  border: none !important;
+  transition: all 0.3s ease;
+}
+
+:host ::ng-deep .p-tabview-nav li .p-tabview-nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+:host ::ng-deep .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background-color: #333;
+  color: var(--primary-color);
+  border-color: var(--primary-color) !important;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+:host ::ng-deep .p-tabview-panels {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+:host ::ng-deep .ranking-card {
+  background-color: rgba(40, 40, 40, 0.95);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  color: #e0e0e0;
+}
+
+:host ::ng-deep .ranking-card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.loading-container {
+  padding: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+:host ::ng-deep .p-datatable {
+  color: #e0e0e0;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: #333;
+  color: #e0e0e0;
+  font-weight: 600;
+  border-bottom: 1px solid #444;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
+  transition: background-color 0.2s, transform 0.2s;
+  background-color: #2a2a2a;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #3a3a3a !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background-color: #303030;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.75rem 1rem;
+  border-color: #444;
+}
+
+:host ::ng-deep .p-datatable-footer, 
+:host ::ng-deep .p-paginator {
+  background-color: #333;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  color: #e0e0e0;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+:host ::ng-deep .p-inputgroup .p-inputgroup-addon {
+  background-color: #333;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+:host ::ng-deep .p-inputtext {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+:host ::ng-deep .p-inputtext:focus {
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.3) !important;
+  border-color: var(--primary-color);
+}
+
+:host ::ng-deep .p-progressbar {
+  background-color: #444;
+}
+
+:host ::ng-deep .p-progressbar .p-progressbar-value {
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-darker) 100%);
+}
+
+.page-title {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), transparent);
+  border-radius: 3px;
+}
+
+:host ::ng-deep .p-button {
+  background-color: #444;
+  border-color: #555;
+}
+
+:host ::ng-deep .p-button:hover {
+  background-color: #555;
+  border-color: #666;
+}

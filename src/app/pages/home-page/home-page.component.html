@@ -68,18 +68,19 @@
         <div class="task-section">
           <h5 class="section-title">Звички на сьогодні</h5>
           <ul class="task-list">
-            <li *ngFor="let habit of todayHabits" class="task-item" [ngClass]="{'completed': habit.completed}">
+            <li *ngFor="let instance of todayHabitInstances" class="task-item" [ngClass]="{'completed': instance.completed}">
               <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                   <input type="checkbox" class="form-check-input me-2" 
-                         [checked]="habit.completed" 
-                         (change)="toggleHabitComplete(habit)">
-                  <span class="task-title">{{ habit.title }}</span>
+                         [checked]="instance.completed"
+                         [disabled]="instance.completed"
+                         (change)="toggleHabitInstanceComplete(instance)">
+                  <span class="task-title">{{ instance.habitTitle || 'Звичка' }}</span>
                 </div>
-                <span class="badge bg-primary ms-2">{{ habit.weekdays }}</span>
+                <span class="badge bg-primary ms-2">{{ instance.date | date:'shortDate' }}</span>
               </div>
             </li>
-            <li *ngIf="todayHabits.length === 0" class="empty-message">
+            <li *ngIf="todayHabitInstances.length === 0" class="empty-message">
               Немає звичок на сьогодні
             </li>
           </ul>

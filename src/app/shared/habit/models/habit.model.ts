@@ -1,4 +1,5 @@
 import { TopicDto } from '../../topic/models/topic.model';
+import { HabitStreakResponse } from '../services/habit.service';
 
 export interface HabitDto {
   id: number;
@@ -10,6 +11,7 @@ export interface HabitDto {
   createdAt?: Date;
   updatedAt?: Date;
   userId?: number;
+  streak?: HabitStreakResponse;
 }
 
 export interface HabitCreationDto {

@@ -12,6 +12,8 @@
                   (click)="openNewMissionDialog()" *ngIf="activeTab === 0"></button>
           <button pButton icon="pi pi-plus" label="Нова звичка" class="p-button-success me-2" 
                   (click)="openNewHabitDialog()" *ngIf="activeTab === 1"></button>
+          <button pButton icon="pi pi-list" label="Екземпляри звичок" class="p-button-info" 
+                  routerLink="/habit-instances" *ngIf="activeTab === 1"></button>
         </div>
       </div>
       
