@@ -4,39 +4,28 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-md-4 mb-4">
-      <p-card styleClass="user-card shadow">
-        <ng-template pTemplate="header">
-          <div class="user-header text-center py-3">
-            <h3 class="mb-0">{{ user?.username || 'Користувач' }}</h3>
+      <p-card styleClass="task-card shadow text-white" header="Профіль користувача">
+        <div class="text-center py-3">
+          <h5 class="section-title mb-2">{{ user?.username || 'Користувач' }}</h5>
+          <i class="pi pi-user fs-1 rounded-circle bg-secondary p-3 text-white"></i>
+        </div>
+
+        <div *ngIf="loading.level" class="text-center my-3 text-white">
+          <i class="pi pi-spin pi-spinner fs-4"></i>
+          <span class="ms-2">Завантаження даних...</span>
+        </div>
+
+        <div *ngIf="!loading.level && userLevel" class="mt-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge bg-light text-dark px-3 py-2">Рівень {{ userLevel.level }}</span>
+            <span class="small text-white">{{ userLevel.score }} / {{ userLevel.scoreToNextLevel }} XP</span>
           </div>
-        </ng-template>
-        <div class="user-info">
-          <p><strong>Роль:</strong> {{ user?.role || 'Користувач' }}</p>
-          <p><strong>ID користувача:</strong> {{ user?.id }}</p>
-          
-          <!-- Level and experience section -->
-          <div *ngIf="loading.level" class="text-center my-3">
-            <i class="pi pi-spin pi-spinner"></i>
-            <span class="ms-2">Завантаження даних...</span>
-          </div>
-          
-          <div *ngIf="!loading.level && userLevel" class="level-info mt-3">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="level-badge">Рівень {{ userLevel.level }}</span>
-              <span class="exp-text">{{ userLevel.score }} / {{ userLevel.scoreToNextLevel }} XP</span>
-            </div>
-            <p-progressBar [value]="getProgressPercentage()" [showValue]="false" styleClass="level-progress"></p-progressBar>
-          </div>
-          <div class="chart-container mt-1" style="background-color: #f5f5f5;">
-            <canvas
-              baseChart
-              [datasets]="radarChartData"
-              [labels]="radarChartLabels"
-              [type]="radarChartType"
-              class="radar-chart"
-            >
-            </canvas>
-          </div>
+
+          <p-progressBar
+            [value]="getProgressPercentage()"
+            [showValue]="false"
+            styleClass="w-100 bg-dark">
+          </p-progressBar>
         </div>
       </p-card>
     </div>

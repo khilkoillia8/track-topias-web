@@ -211,7 +211,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.messageService.add({
           severity: 'error',
           summary: 'Помилка',
-          detail: 'Не вдалося завантажити екземпляри звичок'
+          detail: 'Не вдалося завантажити відстаження звичок'
         });
         console.error('Error loading habit instances', err);
       }
@@ -267,7 +267,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.messageService.add({
           severity: 'error',
           summary: 'Помилка',
-          detail: 'Не вдалося оновити статус екземпляра звички'
+          detail: 'Не вдалося оновити статус відстеження звички'
         });
         console.error('Error updating habit instance status', err);
       }

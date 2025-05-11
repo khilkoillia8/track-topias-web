@@ -143,7 +143,7 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
           this.messageService.add({
             severity: 'error',
             summary: 'Помилка',
-            detail: 'Не вдалося завантажити екземпляри звичок'
+            detail: 'Не вдалося завантажити відстеження звичок'
           });
           console.error('Error loading habit instances', err);
           this.loading = false;
@@ -190,7 +190,7 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
         this.messageService.add({
           severity: 'error',
           summary: 'Помилка',
-          detail: 'Не вдалося оновити статус екземпляра звички'
+          detail: 'Не вдалося оновити статус звички'
         });
         console.error('Error updating habit instance status', err);
       }
@@ -248,14 +248,14 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
         this.messageService.add({
           severity: 'success',
           summary: 'Успішно',
-          detail: 'Екземпляри звичок успішно оновлено'
+          detail: 'Відстеження звичок успішно оновлено'
         });
       })
       .catch(err => {
         this.messageService.add({
           severity: 'error',
           summary: 'Помилка',
-          detail: 'Не вдалося оновити екземпляри звичок'
+          detail: 'Не вдалося оновити відстеження звичок'
         });
         console.error('Error regenerating habit instances', err);
         this.loading = false;

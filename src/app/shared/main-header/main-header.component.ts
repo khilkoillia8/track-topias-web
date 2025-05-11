@@ -24,7 +24,7 @@ export class MainHeaderComponent {
   menuItems = [
     {label: 'Головна', routerLink: '/home'},
     {label: 'Завдання', routerLink: '/task'},
-    {label: 'Екземпляри звичок', routerLink: '/habit-instances'},
+    {label: 'Відстеження звичок', routerLink: '/habit-instances'},
     {label: 'Соціальність', routerLink: '/social'},
     {label: 'Рейтинг', routerLink: '/ranking'}
   ];

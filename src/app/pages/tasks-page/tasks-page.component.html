@@ -12,7 +12,7 @@
                   (click)="openNewMissionDialog()" *ngIf="activeTab === 0"></button>
           <button pButton icon="pi pi-plus" label="Нова звичка" class="p-button-success me-2" 
                   (click)="openNewHabitDialog()" *ngIf="activeTab === 1"></button>
-          <button pButton icon="pi pi-list" label="Екземпляри звичок" class="p-button-info" 
+          <button pButton icon="pi pi-list" label="Відстеження звичок" class="p-button-info" 
                   routerLink="/habit-instances" *ngIf="activeTab === 1"></button>
         </div>
       </div>
@@ -446,7 +446,7 @@
           <div class="field">
             <div class="p-float-label d-flex flex-column">
               <label for="topic-color">Колір</label>
-              <p-colorPicker id="topic-color" appendTo="body" formControlName="color" [inline]="false"></p-colorPicker>
+              <p-colorPicker id="topic-color" appendTo="body" formControlName="color" [inline]="true"></p-colorPicker>
             </div>
           </div>
         </form>

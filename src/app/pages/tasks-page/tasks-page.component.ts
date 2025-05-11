@@ -236,7 +236,7 @@ export class TasksPageComponent implements OnInit {
     this.editingType = 'mission';
     
     const topicIds = mission.topics ? mission.topics.map(topic => topic.id) : [];
-    
+    mission.dueDate = new Date(mission.dueDate)
     this.missionForm.patchValue({
       ...mission,
       topicIds: topicIds
