@@ -48,10 +48,22 @@ export class StartHeaderComponent implements OnInit {
       'start.header.support'
     ]).subscribe(translations => {
       this.menuItems = [
-        { label: translations['start.header.home'], routerLink: '/' },
-        { label: translations['start.header.about'], routerLink: '/about' },
-        { label: translations['start.header.contacts'], routerLink: '/contacts' },
-        { label: translations['start.header.support'], routerLink: '/support' }
+        { 
+          label: translations['start.header.home'], 
+          command: () => this.scrollTo('home')
+        },
+        { 
+          label: translations['start.header.about'], 
+          command: () => this.scrollTo('about')
+        },
+        { 
+          label: translations['start.header.contacts'], 
+          command: () => this.scrollTo('contacts')
+        },
+        { 
+          label: translations['start.header.support'], 
+          command: () => this.scrollTo('support')
+        }
       ];
     });
   }
@@ -66,5 +78,12 @@ export class StartHeaderComponent implements OnInit {
 
   getOtherLanguage(): string {
     return this.currentLang === 'uk' ? 'Українська' : 'English';
+  }
+
+  scrollTo(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

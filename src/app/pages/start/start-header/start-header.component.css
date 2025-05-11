@@ -1,0 +1,29 @@
+:host ::ng-deep .p-menubar {
+  background-color: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+:host ::ng-deep .p-menubar .p-menuitem-link {
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+}
+
+:host ::ng-deep .p-menubar .p-menuitem-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #fff;
+}
+
+:host ::ng-deep .p-button-outlined {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+:host ::ng-deep .p-button-outlined:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}

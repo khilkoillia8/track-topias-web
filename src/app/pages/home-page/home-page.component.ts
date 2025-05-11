@@ -3,6 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 import {MessageService, PrimeTemplate} from "primeng/api";
 import {Card} from 'primeng/card';
+import {UIChart} from "primeng/chart";
 import {CheckboxModule} from 'primeng/checkbox';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {ToastModule} from 'primeng/toast';
@@ -32,7 +33,8 @@ import {TranslateModule} from '@ngx-translate/core';
     CheckboxModule,
     ProgressBarModule,
     TranslateModule,
-    BaseChartDirective
+    BaseChartDirective,
+    UIChart
   ],
   providers: [MessageService],
   templateUrl: './home-page.component.html',

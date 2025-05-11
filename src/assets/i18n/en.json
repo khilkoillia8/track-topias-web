@@ -36,7 +36,44 @@
     "motivation": "Get Motivated",
     "achieveGoals": "Achieve Your Goals",
     "description": "It's time to enjoy completing your tasks! Join TrackTopias!",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "about": {
+      "trackHabits": "Track Your Habits",
+      "trackHabitsDesc": "Create and track regular habits to build beneficial behavior patterns",
+      "dailyTracking": "Daily tracking and reminders",
+      "progressVisualization": "Progress visualization and analytics",
+      "manageTopics": "Manage Your Topics",
+      "manageTopicsDesc": "Organize your tasks and habits by topics for better systematization",
+      "completeTasks": "Complete tasks and level up",
+      "socialFeatures": "Compete with friends"
+    },
+    "features": {
+      "title": "Application Features",
+      "taskManagement": "Task Management",
+      "taskManagementDesc": "Create, edit, and track your daily tasks with different priorities",
+      "habitTracking": "Habit Tracking",
+      "habitTrackingDesc": "Form positive habits through regular tracking and streak analysis",
+      "statistics": "Detailed Statistics",
+      "statisticsDesc": "View your progress with charts and rankings compared to other users"
+    },
+    "contacts": {
+      "getInTouch": "Get in Touch",
+      "reachOut": "Have questions or suggestions? Feel free to reach out to us!",
+      "followUs": "Follow Us"
+    },
+    "support": {
+      "faq": "Frequently Asked Questions",
+      "question1": "How do I get started with TrackTopias?",
+      "answer1": "Simply register, log in, and start creating your tasks and habits!",
+      "question2": "Is there a mobile version of the app?",
+      "answer2": "Yes, we're working on mobile apps for Android and iOS that will be available soon.",
+      "question3": "Can I export my progress data?",
+      "answer3": "Yes, in your profile there's an option to export your data in various formats.",
+      "contactSupport": "Contact Support"
+    },
+    "footer": {
+      "copyright": "All rights reserved"
+    }
   },
   "login": {
     "title": "Log In",

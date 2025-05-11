@@ -28,4 +28,11 @@ export class StartPageComponent {
   toggleForm(showLogin: boolean): void {
     this.showLogin = showLogin;
   }
+  
+  scrollTo(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }

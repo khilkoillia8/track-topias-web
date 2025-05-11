@@ -1,11 +1,11 @@
 <app-start-header [isLogin]="!showLogin" (loginToggle)="toggleForm($event)"></app-start-header>
 
-<div class="container-fluid fullscreen-background">
-  <div class="row align-items-center w-100">
+<div class="container-fluid fullscreen-background" id="home">
+  <div class="row align-items-center min-vh-100">
     <div class="col-md-6 p-4">
       <p-card styleClass="info-card shadow-lg border-0" [header]="'start.motivation' | translate" [subheader]="'start.achieveGoals' | translate">
         <p class="lead text-light">{{ 'start.description' | translate }}</p>
-        <button pButton [label]="'start.learnMore' | translate" icon="pi pi-info-circle" class="p-button-outlined info-button mt-3"></button>
+        <button pButton [label]="'start.learnMore' | translate" icon="pi pi-info-circle" class="p-button-outlined info-button mt-3" (click)="scrollTo('about')"></button>
       </p-card>
     </div>
     <div class="col-md-6 d-flex justify-content-center align-items-center p-4">
@@ -16,4 +16,157 @@
     </div>
   </div>
 </div>
+
+<section id="about" class="container-fluid py-5 section-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h2 class="section-title">{{ 'start.header.about' | translate }}</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h3>{{ 'start.about.trackHabits' | translate }}</h3>
+        <p class="feature-text">{{ 'start.about.trackHabitsDesc' | translate }}</p>
+        <div class="feature-box">
+          <i class="pi pi-calendar feature-icon"></i>
+          <span>{{ 'start.about.dailyTracking' | translate }}</span>
+        </div>
+        <div class="feature-box">
+          <i class="pi pi-chart-line feature-icon"></i>
+          <span>{{ 'start.about.progressVisualization' | translate }}</span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3>{{ 'start.about.manageTopics' | translate }}</h3>
+        <p class="feature-text">{{ 'start.about.manageTopicsDesc' | translate }}</p>
+        <div class="feature-box">
+          <i class="pi pi-check-circle feature-icon"></i>
+          <span>{{ 'start.about.completeTasks' | translate }}</span>
+        </div>
+        <div class="feature-box">
+          <i class="pi pi-users feature-icon"></i>
+          <span>{{ 'start.about.socialFeatures' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="container-fluid py-5 section-container alt-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h2 class="section-title">{{ 'start.features.title' | translate }}</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <i class="pi pi-check-square"></i>
+          </div>
+          <h4>{{ 'start.features.taskManagement' | translate }}</h4>
+          <p>{{ 'start.features.taskManagementDesc' | translate }}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <i class="pi pi-refresh"></i>
+          </div>
+          <h4>{{ 'start.features.habitTracking' | translate }}</h4>
+          <p>{{ 'start.features.habitTrackingDesc' | translate }}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <i class="pi pi-chart-bar"></i>
+          </div>
+          <h4>{{ 'start.features.statistics' | translate }}</h4>
+          <p>{{ 'start.features.statisticsDesc' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacts" class="container-fluid py-5 section-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h2 class="section-title">{{ 'start.header.contacts' | translate }}</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="contact-card">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>{{ 'start.contacts.getInTouch' | translate }}</h4>
+              <p>{{ 'start.contacts.reachOut' | translate }}</p>
+              <div class="contact-info">
+                <p><i class="pi pi-envelope me-2"></i> support&#64;tracktopias.com</p>
+                <p><i class="pi pi-phone me-2"></i> +380 123 456 789</p>
+                <p><i class="pi pi-map-marker me-2"></i> Kyiv, Ukraine</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h4>{{ 'start.contacts.followUs' | translate }}</h4>
+              <div class="social-links">
+                <a href="#" class="social-link"><i class="pi pi-facebook"></i></a>
+                <a href="#" class="social-link"><i class="pi pi-twitter"></i></a>
+                <a href="#" class="social-link"><i class="pi pi-instagram"></i></a>
+                <a href="#" class="social-link"><i class="pi pi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="support" class="container-fluid py-5 section-container alt-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h2 class="section-title">{{ 'start.header.support' | translate }}</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="faq-section">
+          <h3>{{ 'start.support.faq' | translate }}</h3>
+          <div class="faq-item">
+            <h4>{{ 'start.support.question1' | translate }}</h4>
+            <p>{{ 'start.support.answer1' | translate }}</p>
+          </div>
+          <div class="faq-item">
+            <h4>{{ 'start.support.question2' | translate }}</h4>
+            <p>{{ 'start.support.answer2' | translate }}</p>
+          </div>
+          <div class="faq-item">
+            <h4>{{ 'start.support.question3' | translate }}</h4>
+            <p>{{ 'start.support.answer3' | translate }}</p>
+          </div>
+          <div class="support-btn-container text-center mt-4">
+            <button pButton [label]="'start.support.contactSupport' | translate" icon="pi pi-envelope" class="p-button-primary"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="container-fluid py-4 footer-container">
+  <div class="container text-center">
+    <p>{{ 'start.footer.copyright' | translate }} &copy; 2025 TrackTopias</p>
+  </div>
+</footer>
 
