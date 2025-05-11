@@ -5,7 +5,7 @@
   
   <div class="row">
     <div class="col-12">
-      <h2 class="page-title text-white mb-4">Соціальна мережа</h2>
+      <h2 class="page-title text-white mb-4">{{ 'social.title' | translate }}</h2>
       
       <div *ngIf="loading" class="loading-container">
         <div class="row">
@@ -31,19 +31,19 @@
                 ></p-avatar>
                 <div>
                   <h4 class="mb-1">{{ userWithLevel.user.username }}</h4>
-                  <span class="role-badge">{{ userWithLevel.user.role || 'Користувач' }}</span>
+                  <span class="role-badge">{{ userWithLevel.user.role || ('social.user' | translate) }}</span>
                 </div>
               </div>
               
               <div class="user-details mb-3">
-                <p><strong>ID користувача:</strong> {{ userWithLevel.user.id }}</p>
-                <p><strong>Email:</strong> {{ userWithLevel.user.email }}</p>
+                <p><strong>{{ 'social.userId' | translate }}:</strong> {{ userWithLevel.user.id }}</p>
+                <p><strong>{{ 'social.email' | translate }}:</strong> {{ userWithLevel.user.email }}</p>
               </div>
               
               <!-- Level information -->
               <div *ngIf="userWithLevel.level" class="level-info mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="level-badge">Рівень {{ userWithLevel.level.level }}</span>
+                  <span class="level-badge">{{ 'social.level' | translate }} {{ userWithLevel.level.level }}</span>
                   <span class="exp-text">{{ userWithLevel.level.score }} / {{ userWithLevel.level.scoreToNextLevel }} XP</span>
                 </div>
                 <p-progressBar [value]="getProgressPercentage(userWithLevel.level)" [showValue]="false" styleClass="level-progress"></p-progressBar>
@@ -51,7 +51,7 @@
               
               <div *ngIf="!userWithLevel.level" class="level-info mt-3">
                 <div class="empty-level">
-                  <span>Інформація про рівень недоступна</span>
+                  <span>{{ 'social.levelNotAvailable' | translate }}</span>
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@
         
         <div class="col-12" *ngIf="users.length === 0">
           <div class="empty-message">
-            <p>Немає доступних користувачів для відображення</p>
+            <p>{{ 'social.noUsers' | translate }}</p>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
 <!-- User Details Dialog -->
 <p-dialog 
   [(visible)]="dialogVisible" 
-  [header]="selectedUser?.username || 'Деталі користувача'"
+  [header]="selectedUser?.username || ('social.userDetails' | translate)"
   [modal]="true"
   [style]="{ width: '90%', maxWidth: '1000px' }"
   [draggable]="false"
@@ -97,7 +97,7 @@
             ></p-avatar>
             <div>
               <h3 class="mb-1">{{ selectedUser.username }}</h3>
-              <span class="role-badge">{{ selectedUser.role || 'Користувач' }}</span>
+              <span class="role-badge">{{ selectedUser.role || ('social.user' | translate) }}</span>
               <p class="mb-0 mt-2">{{ selectedUser.email }}</p>
             </div>
           </div>
@@ -105,9 +105,9 @@
         
         <div class="col-md-6">
           <div *ngIf="selectedUserLevel" class="level-detail">
-            <h4>Прогрес</h4>
+            <h4>{{ 'social.progress' | translate }}</h4>
             <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="level-badge">Рівень {{ selectedUserLevel.level }}</span>
+              <span class="level-badge">{{ 'social.level' | translate }} {{ selectedUserLevel.level }}</span>
               <span class="exp-text">{{ selectedUserLevel.score }} / {{ selectedUserLevel.scoreToNextLevel }} XP</span>
             </div>
             <p-progressBar [value]="getProgressPercentage(selectedUserLevel)" [showValue]="false" styleClass="level-progress"></p-progressBar>
@@ -121,25 +121,25 @@
       <div class="row">
         <div class="col-md-3">
           <div class="stat-card">
-            <div class="stat-title">Завдання</div>
+            <div class="stat-title">{{ 'social.tasks' | translate }}</div>
             <div class="stat-value">{{ userStats.completedMissions }} / {{ userStats.totalMissions }}</div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="stat-card">
-            <div class="stat-title">Відсоток виконання</div>
+            <div class="stat-title">{{ 'social.completionPercentage' | translate }}</div>
             <div class="stat-value">{{ userStats.totalMissions ? (userStats.completedMissions / userStats.totalMissions * 100).toFixed(0) : 0 }}%</div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="stat-card">
-            <div class="stat-title">Звички</div>
+            <div class="stat-title">{{ 'social.habits' | translate }}</div>
             <div class="stat-value">{{ userStats.completedHabits }} / {{ userStats.totalHabits }}</div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="stat-card">
-            <div class="stat-title">Відсоток виконання</div>
+            <div class="stat-title">{{ 'social.completionPercentage' | translate }}</div>
             <div class="stat-value">{{ userStats.totalHabits ? (userStats.completedHabits / userStats.totalHabits * 100).toFixed(0) : 0 }}%</div>
           </div>
         </div>
@@ -149,22 +149,22 @@
     <!-- Tabs with more details -->
     <p-tabView>
       <!-- Statistics Tab -->
-      <p-tabPanel header="Статистика по темам">
+      <p-tabPanel [header]="'social.topicStatistics' | translate">
         <div class="chart-container">
           <p-chart type="radar" [data]="chartData" [options]="chartOptions" height="400"></p-chart>
         </div>
       </p-tabPanel>
       
       <!-- Missions Tab -->
-      <p-tabPanel header="Завдання">
+      <p-tabPanel [header]="'social.tasks' | translate">
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Статус</th>
-                <th>Назва</th>
-                <th>Пріоритет</th>
-                <th>Термін виконання</th>
+                <th>{{ 'social.status' | translate }}</th>
+                <th>{{ 'social.name' | translate }}</th>
+                <th>{{ 'social.priority-label' | translate }}</th>
+                <th>{{ 'social.dueDate' | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -175,13 +175,13 @@
                 <td [ngClass]="{'text-muted text-decoration-line-through': mission.completed}">{{ mission.title }}</td>
                 <td>
                   <span class="priority-badge" [ngClass]="getMissionPriorityClass(mission.priority)">
-                    {{ mission.priority }}
+                    {{ 'social.priority.' + mission.priority | translate }}
                   </span>
                 </td>
                 <td>{{ mission.dueDate | date:'mediumDate' }}</td>
               </tr>
               <tr *ngIf="userMissions.length === 0">
-                <td colspan="4" class="text-center">Немає доступних завдань</td>
+                <td colspan="4" class="text-center">{{ 'social.noTasks' | translate }}</td>
               </tr>
             </tbody>
           </table>
@@ -189,15 +189,15 @@
       </p-tabPanel>
       
       <!-- Habits Tab -->
-      <p-tabPanel header="Звички">
+      <p-tabPanel [header]="'social.habits' | translate">
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Статус</th>
-                <th>Назва</th>
-                <th>Частота</th>
-                <th>Опис</th>
+                <th>{{ 'social.status' | translate }}</th>
+                <th>{{ 'social.name' | translate }}</th>
+                <th>{{ 'social.frequency' | translate }}</th>
+                <th>{{ 'social.description' | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -211,10 +211,10 @@
                     {{ formatWeekdays(habit.weekdays) }}
                   </span>
                 </td>
-                <td>{{ habit.description || 'Без опису' }}</td>
+                <td>{{ habit.description || ('social.noDescription' | translate) }}</td>
               </tr>
               <tr *ngIf="userHabits.length === 0">
-                <td colspan="4" class="text-center">Немає доступних звичок</td>
+                <td colspan="4" class="text-center">{{ 'social.noHabits' | translate }}</td>
               </tr>
             </tbody>
           </table>
@@ -224,6 +224,6 @@
   </div>
   
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-times" label="Закрити" (click)="dialogVisible = false"></p-button>
+    <p-button icon="pi pi-times" [label]="'social.close' | translate" (click)="dialogVisible = false"></p-button>
   </ng-template>
 </p-dialog>

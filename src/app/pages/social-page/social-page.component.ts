@@ -18,10 +18,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { ChartModule } from 'primeng/chart';
 import { StatisticsService } from '../../shared/statistics/services/statistics.service';
 import { MissionService } from '../../shared/mission/services/mission.service';
-
 import { MissionDto } from '../../shared/mission/models/mission.model';
 import { HabitDto } from '../../shared/habit/models/habit.model';
 import { ButtonModule } from 'primeng/button';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 interface UserWithLevel {
   user: User;
@@ -54,7 +54,8 @@ interface UserDetailStats {
     DialogModule,
     TabViewModule,
     ChartModule,
-    ButtonModule
+    ButtonModule,
+    TranslateModule
   ],
   providers: [MessageService],
   templateUrl: './social-page.component.html',
@@ -92,7 +93,8 @@ export class SocialPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private statisticsService: StatisticsService,
     private missionService: MissionService,
-    private habitService: HabitService
+    private habitService: HabitService,
+    private translateService: TranslateService
   ) {
     this.initChartOptions();
   }
@@ -115,10 +117,12 @@ export class SocialPageComponent implements OnInit, OnDestroy {
           this.fetchUserLevels(users);
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося завантажити список користувачів'
+          this.translateService.get(['social.error', 'social.error.loadUsers']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['social.error'],
+              detail: translations['social.error.loadUsers']
+            });
           });
           console.error('Error loading users', err);
           this.loading = false;
@@ -147,10 +151,12 @@ export class SocialPageComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося завантажити дані про рівні користувачів'
+          this.translateService.get(['social.error', 'social.error.loadLevels']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['social.error'],
+              detail: translations['social.error.loadLevels']
+            });
           });
           console.error('Error loading user levels', err);
           this.users = users.map(user => ({
@@ -198,9 +204,8 @@ export class SocialPageComponent implements OnInit, OnDestroy {
       next: (result) => {
         const userStats = result.statistics;
         
-        this.userMissions = result.missions
-        
-        this.userHabits = result.habits
+        this.userMissions = result.missions;
+        this.userHabits = result.habits;
         
         this.userStats.totalMissions = userStats.totalMissions;
         this.userStats.completedMissions = userStats.completedMissions;
@@ -234,10 +239,12 @@ export class SocialPageComponent implements OnInit, OnDestroy {
         this.loadingUserDetails = false;
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося завантажити дані користувача'
+        this.translateService.get(['social.error', 'social.error.loadUserDetails']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['social.error'],
+            detail: translations['social.error.loadUserDetails']
+          });
         });
         console.error('Error loading user details', err);
         this.loadingUserDetails = false;
@@ -246,25 +253,27 @@ export class SocialPageComponent implements OnInit, OnDestroy {
   }
   
   updateChartData(): void {
-    this.chartData = {
-      labels: this.userStats.topicData.labels,
-      datasets: [
-        {
-          label: 'Звички',
-          backgroundColor: 'rgba(65, 105, 225, 0.3)',
-          borderColor: '#4169e1',
-          pointBackgroundColor: '#4169e1',
-          data: this.userStats.topicData.habitsData
-        },
-        {
-          label: 'Завдання',
-          backgroundColor: 'rgba(255, 99, 132, 0.3)',
-          borderColor: '#ff6384',
-          pointBackgroundColor: '#ff6384',
-          data: this.userStats.topicData.missionsData
-        }
-      ]
-    };
+    this.translateService.get(['social.habits', 'social.missions']).subscribe(translations => {
+      this.chartData = {
+        labels: this.userStats.topicData.labels,
+        datasets: [
+          {
+            label: translations['social.habits'],
+            backgroundColor: 'rgba(65, 105, 225, 0.3)',
+            borderColor: '#4169e1',
+            pointBackgroundColor: '#4169e1',
+            data: this.userStats.topicData.habitsData
+          },
+          {
+            label: translations['social.missions'],
+            backgroundColor: 'rgba(255, 99, 132, 0.3)',
+            borderColor: '#ff6384',
+            pointBackgroundColor: '#ff6384',
+            data: this.userStats.topicData.missionsData
+          }
+        ]
+      };
+    });
   }
   
   initChartOptions(): void {
@@ -313,18 +322,10 @@ export class SocialPageComponent implements OnInit, OnDestroy {
   }
 
   formatWeekdays(weekdays: string[]): string {
-    if (!weekdays || weekdays.length === 0) return 'Не вказано';
+    if (!weekdays || weekdays.length === 0) {
+      return this.translateService.instant('social.notSpecified');
+    }
 
-    const daysMap: {[key: string]: string} = {
-      'monday': 'Пн',
-      'tuesday': 'Вт',
-      'wednesday': 'Ср',
-      'thursday': 'Чт',
-      'friday': 'Пт',
-      'saturday': 'Сб',
-      'sunday': 'Нд'
-    };
-
-    return weekdays.map(day => daysMap[day] || day).join(', ');
+    return weekdays.map(day => this.translateService.instant(`social.weekdays.short.${day}`) || day).join(', ');
   }
 }

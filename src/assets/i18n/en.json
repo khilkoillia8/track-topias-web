@@ -162,5 +162,53 @@
       "habitCompleted": "Habit marked as completed",
       "instancesUpdated": "Habit instances updated successfully"
     }
+  },
+  "social": {
+    "title": "Social Network",
+    "user": "User",
+    "userId": "User ID",
+    "email": "Email",
+    "level": "Level",
+    "levelNotAvailable": "Level information not available",
+    "progress": "Progress",
+    "noUsers": "No users available to display",
+    "userDetails": "User Details",
+    "tasks": "Tasks",
+    "habits": "Habits",
+    "missions": "Tasks",
+    "completionPercentage": "Completion Percentage",
+    "topicStatistics": "Topic Statistics",
+    "status": "Status",
+    "name": "Name",
+    "priority-label": "Priority",
+    "dueDate": "Due Date",
+    "frequency": "Frequency",
+    "description": "Description",
+    "close": "Close",
+    "noTasks": "No available tasks",
+    "noHabits": "No available habits",
+    "noDescription": "No description",
+    "notSpecified": "Not specified",
+    "weekdays": {
+      "short": {
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thursday": "Thu",
+        "friday": "Fri",
+        "saturday": "Sat",
+        "sunday": "Sun"
+      }
+    },
+    "priority": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "error": {
+      "loadUsers": "Failed to load user list",
+      "loadLevels": "Failed to load user level data",
+      "loadUserDetails": "Failed to load user data"
+    }
   }
 }

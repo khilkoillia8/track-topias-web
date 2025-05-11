@@ -162,5 +162,53 @@
       "habitCompleted": "Звичку позначено як виконану",
       "instancesUpdated": "Відстеження звичок успішно оновлено"
     }
+  },
+  "social": {
+    "title": "Соціальна мережа",
+    "user": "Користувач",
+    "userId": "ID користувача",
+    "email": "Email",
+    "level": "Рівень",
+    "levelNotAvailable": "Інформація про рівень недоступна",
+    "progress": "Прогрес",
+    "noUsers": "Немає доступних користувачів для відображення",
+    "userDetails": "Деталі користувача",
+    "tasks": "Завдання",
+    "habits": "Звички",
+    "missions": "Завдання",
+    "completionPercentage": "Відсоток виконання",
+    "topicStatistics": "Статистика по темам",
+    "status": "Статус",
+    "name": "Назва",
+    "priority-label": "Пріоритет",
+    "dueDate": "Термін виконання",
+    "frequency": "Частота",
+    "description": "Опис",
+    "close": "Закрити",
+    "noTasks": "Немає доступних завдань",
+    "noHabits": "Немає доступних звичок",
+    "noDescription": "Без опису",
+    "notSpecified": "Не вказано",
+    "weekdays": {
+      "short": {
+        "monday": "Пн",
+        "tuesday": "Вт",
+        "wednesday": "Ср",
+        "thursday": "Чт",
+        "friday": "Пт",
+        "saturday": "Сб",
+        "sunday": "Нд"
+      }
+    },
+    "priority": {
+      "high": "Високий",
+      "medium": "Середній",
+      "low": "Низький"
+    },
+    "error": {
+      "loadUsers": "Не вдалося завантажити список користувачів",
+      "loadLevels": "Не вдалося завантажити дані про рівні користувачів",
+      "loadUserDetails": "Не вдалося завантажити дані користувача"
+    }
   }
 }
