@@ -10,6 +10,13 @@
   </ng-template>
 
   <ng-template pTemplate="end">
-    <button pButton [label]="isLogin ? 'Увійти' : 'Зареєструватися'"  class="p-button-outlined p-button-sm" (click)="onClick()"></button>
+    <button pButton [icon]="'pi pi-globe'" 
+            class="p-button-outlined p-button-sm me-2"
+            [label]="getOtherLanguage()"
+            (click)="toggleLanguage()">
+    </button>
+    <button pButton [label]="isLogin ? ('start.login' | translate) : ('start.register' | translate)" 
+            class="p-button-outlined p-button-sm" 
+            (click)="onClick()"></button>
   </ng-template>
 </p-menubar>

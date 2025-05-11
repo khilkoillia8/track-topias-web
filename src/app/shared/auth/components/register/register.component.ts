@@ -17,9 +17,11 @@ import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
 import { TooltipModule } from "primeng/tooltip";
 import { AuthService } from "../../services/auth.service";
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   imports: [
     InputText,
     ReactiveFormsModule,
@@ -28,7 +30,8 @@ import { AuthService } from "../../services/auth.service";
     Password,
     ToastModule,
     NgClass,
-    TooltipModule
+    TooltipModule,
+    TranslateModule
   ],
   providers: [MessageService],
   templateUrl: './register.component.html',
@@ -46,7 +49,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translateService: TranslateService
   ) {
     this.registerForm = this.fb.group({
       username: ['', [
@@ -107,16 +111,23 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.authService.signUp(this.registerForm.value).subscribe({
         next: (credentials) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Успішна реєстрація',
-            detail: 'Ви успішно зареєструвалися. Тепер ви можете увійти.'
+          this.translateService.get(['register.success.title', 'register.success.message']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'success',
+              summary: translations['register.success.title'],
+              detail: translations['register.success.message']
+            });
           });
           this.loginToggle.emit(true);
         },
         error: (error) => {
           console.error('Registration failed', error);
-          let errorMsg = 'Помилка реєстрації. Будь ласка, спробуйте пізніше.';
+          
+          let errorMsg: string;
+          
+          this.translateService.get('register.error.defaultMessage').subscribe(message => {
+            errorMsg = message;
+          });
           
           if (error.error && error.error.message) {
             errorMsg = error.error.message;
@@ -124,10 +135,12 @@ export class RegisterComponent {
             errorMsg = error.message;
           }
           
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка реєстрації',
-            detail: errorMsg
+          this.translateService.get('register.error.title').subscribe(title => {
+            this.messageService.add({
+              severity: 'error',
+              summary: title,
+              detail: errorMsg
+            });
           });
         }
       });
@@ -151,46 +164,46 @@ export class RegisterComponent {
   
   getUsernameErrorMessage(): string {
     if (this.username?.errors?.['required']) {
-      return 'Нікнейм обов\'язковий';
+      return this.translateService.instant('register.error.usernameRequired');
     }
     if (this.username?.errors?.['minlength'] || this.username?.errors?.['maxlength']) {
-      return 'Нікнейм має бути від 1 до 20 символів';
+      return this.translateService.instant('register.error.usernameLength');
     }
     if (this.username?.errors?.['invalidFormat']) {
-      return 'Дозволені лише літери, цифри, дефіс та нижнє підкреслення';
+      return this.translateService.instant('register.error.usernameFormat');
     }
     if (this.username?.errors?.['prohibitedWord']) {
-      return 'Цей нікнейм містить заборонене слово';
+      return this.translateService.instant('register.error.usernameProhibited');
     }
     return '';
   }
   
   getEmailErrorMessage(): string {
     if (this.email?.errors?.['required']) {
-      return 'Email обов\'язковий';
+      return this.translateService.instant('register.error.emailRequired');
     }
     if (this.email?.errors?.['email']) {
-      return 'Введіть правильний email';
+      return this.translateService.instant('register.error.emailInvalid');
     }
     return '';
   }
   
   getPasswordErrorMessage(): string {
     if (this.password?.errors?.['required']) {
-      return 'Пароль обов\'язковий';
+      return this.translateService.instant('register.error.passwordRequired');
     }
     if (this.password?.errors?.['minlength']) {
-      return 'Пароль має містити мінімум 8 символів';
+      return this.translateService.instant('register.error.passwordLength');
     }
     return '';
   }
   
   getConfirmPasswordErrorMessage(): string {
     if (this.confirmPassword?.errors?.['required']) {
-      return 'Підтвердження паролю обов\'язкове';
+      return this.translateService.instant('register.error.confirmRequired');
     }
     if (this.confirmPassword?.errors?.['passwordMismatch']) {
-      return 'Паролі не співпадають';
+      return this.translateService.instant('register.error.passwordMismatch');
     }
     return '';
   }

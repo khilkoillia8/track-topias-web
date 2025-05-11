@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<p-panel header="Зареєструйтесь безкоштовно" styleClass="shadow-sm">
+<p-panel [header]="'register.title' | translate" styleClass="shadow-sm">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-2 p-3">
     <div class="p-float-label mb-3">
       <input id="username" pInputText type="text" formControlName="username" class="w-100" 
@@ -7,7 +7,7 @@
              [pTooltip]="getUsernameErrorMessage()" tooltipPosition="right" 
              [showDelay]="100" [hideDelay]="100"
              [tooltipDisabled]="!shouldShowTooltip(username)" />
-      <label for="username">Логін (нікнейм)</label>
+      <label for="username">{{ 'register.username' | translate }}</label>
     </div>
     
     <div class="p-float-label mb-3">
@@ -16,7 +16,7 @@
              [pTooltip]="getEmailErrorMessage()" tooltipPosition="right"
              [showDelay]="100" [hideDelay]="100"
              [tooltipDisabled]="!shouldShowTooltip(email)" />
-      <label for="email">Email</label>
+      <label for="email">{{ 'register.email' | translate }}</label>
     </div>
     
     <div class="p-float-label mb-3">
@@ -24,8 +24,12 @@
                   [ngClass]="{'ng-invalid ng-dirty': password?.invalid && (password?.touched || submitted)}"
                   [pTooltip]="getPasswordErrorMessage()" tooltipPosition="right"
                   [showDelay]="100" [hideDelay]="100"
-                  [tooltipDisabled]="!shouldShowTooltip(password)"></p-password>
-      <label for="password">Пароль</label>
+                  [tooltipDisabled]="!shouldShowTooltip(password)"
+                  [weakLabel]="'register.weak' | translate"
+                  [mediumLabel]="'register.medium' | translate"
+                  [strongLabel]="'register.strong' | translate"
+                  [promptLabel]="'register.enterPassword' | translate"></p-password>
+      <label for="password">{{ 'register.password' | translate }}</label>
     </div>
 
     <div class="p-float-label mb-4">
@@ -34,14 +38,14 @@
                  [pTooltip]="getConfirmPasswordErrorMessage()" tooltipPosition="right"
                  [showDelay]="100" [hideDelay]="100"
                  [tooltipDisabled]="!shouldShowTooltip(confirmPassword)"></p-password>
-      <label for="confirmPassword">Підтвердити пароль</label>
+      <label for="confirmPassword">{{ 'register.confirmPassword' | translate }}</label>
     </div>
     
-    <button pButton type="submit" label="Зареєструватися" class=" p-3 fw-bold mt-3"></button>
+    <button pButton type="submit" [label]="'register.signUp' | translate" class="p-3 fw-bold mt-3"></button>
     
     <div class="text-center mt-3">
-      <span class="text-light">Вже маєте аккаунт? </span>
-      <a href="#" class="fw-bold" (click)="onLoginClick($event)">Увійти</a>
+      <span class="text-light">{{ 'register.alreadyHaveAccount' | translate }} </span>
+      <a href="#" class="fw-bold" (click)="onLoginClick($event)">{{ 'register.signIn' | translate }}</a>
     </div>
   </form>
 </p-panel>

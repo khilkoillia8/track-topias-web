@@ -70,6 +70,6 @@ export class MainHeaderComponent implements OnInit {
   }
 
   getOtherLanguage(): string {
-    return this.currentLang === 'uk' ? 'English' : 'Українська';
+    return this.currentLang === 'uk' ? 'Українська' : 'English';
   }
 }

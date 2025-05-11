@@ -24,6 +24,68 @@
       "low": "low"
     }
   },
+  "start": {
+    "header": {
+      "home": "Home",
+      "about": "About",
+      "contacts": "Contacts",
+      "support": "Support"
+    },
+    "login": "Log In",
+    "register": "Sign Up",
+    "motivation": "Get Motivated",
+    "achieveGoals": "Achieve Your Goals",
+    "description": "It's time to enjoy completing your tasks! Join TrackTopias!",
+    "learnMore": "Learn More"
+  },
+  "login": {
+    "title": "Log In",
+    "subtitle": "Welcome back! Enter your credentials to continue.",
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign In",
+    "noAccount": "Don't have an account?",
+    "registerNow": "Register now",
+    "error": {
+      "title": "Login Error",
+      "defaultMessage": "Login failed. Please try again later.",
+      "usernameRequired": "Username is required",
+      "passwordRequired": "Password is required"
+    }
+  },
+  "register": {
+    "title": "Create Account",
+    "subtitle": "Create a new account to track your progress",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "signUp": "Sign Up",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign In",
+    "weak": "Weak",
+    "medium": "Medium",
+    "strong": "Strong",
+    "enterPassword": "Enter a password",
+    "success": {
+      "title": "Registration Successful",
+      "message": "You have successfully registered. Now you can log in."
+    },
+    "error": {
+      "title": "Registration Error",
+      "defaultMessage": "Registration failed. Please try again later.",
+      "usernameRequired": "Username is required",
+      "usernameLength": "Username must be between 1 and 20 characters",
+      "usernameFormat": "Only letters, numbers, hyphens, and underscores are allowed",
+      "usernameProhibited": "This username contains a prohibited word",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "passwordRequired": "Password is required",
+      "passwordLength": "Password must be at least 8 characters long",
+      "confirmRequired": "Password confirmation is required",
+      "passwordMismatch": "Passwords do not match"
+    }
+  },
   "tasks": {
     "missions": "Tasks",
     "habits": "Habits",

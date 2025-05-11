@@ -16,6 +16,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../../services/auth.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,8 @@ import { AuthService } from '../../services/auth.service';
     Password,
     NgClass,
     TooltipModule,
-    ToastModule
+    ToastModule,
+    TranslateModule
   ],
   providers: [MessageService],
   templateUrl: './login.component.html',
@@ -43,7 +45,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translateService: TranslateService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -61,7 +64,11 @@ export class LoginComponent {
         },
         error: (error) => {
           console.error('Login failed', error);
-          let errorMsg = 'Помилка входу. Будь ласка, спробуйте пізніше.';
+          let errorMsg: string;
+          
+          this.translateService.get('login.error.defaultMessage').subscribe(message => {
+            errorMsg = message;
+          });
           
           if (error.error && error.error.message) {
             errorMsg = error.error.message;
@@ -69,10 +76,12 @@ export class LoginComponent {
             errorMsg = error.message;
           }
           
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка входу',
-            detail: errorMsg
+          this.translateService.get('login.error.title').subscribe(title => {
+            this.messageService.add({
+              severity: 'error',
+              summary: title,
+              detail: errorMsg
+            });
           });
         }
       });
@@ -89,14 +98,22 @@ export class LoginComponent {
 
   getUsernameErrorMessage(): string {
     if (this.username?.errors?.['required']) {
-      return 'Нікнейм обов\'язковий';
+      let message = '';
+      this.translateService.get('login.error.usernameRequired').subscribe(msg => {
+        message = msg;
+      });
+      return message;
     }
     return '';
   }
 
   getPasswordErrorMessage(): string {
     if (this.password?.errors?.['required']) {
-      return 'Пароль обов\'язковий';
+      let message = '';
+      this.translateService.get('login.error.passwordRequired').subscribe(msg => {
+        message = msg;
+      });
+      return message;
     }
     return '';
   }
