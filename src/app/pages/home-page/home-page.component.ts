@@ -19,6 +19,7 @@ import {MainHeaderComponent} from "../../shared/main-header/main-header.componen
 import {MissionCreationDto, MissionDto} from '../../shared/mission/models/mission.model';
 import {MissionService} from '../../shared/mission/services/mission.service';
 import {StatisticsService} from "../../shared/statistics/services/statistics.service";
+import {TranslateModule} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home-page',
@@ -26,11 +27,11 @@ import {StatisticsService} from "../../shared/statistics/services/statistics.ser
   imports: [
     MainHeaderComponent,
     Card,
-    PrimeTemplate,
     CommonModule,
     ToastModule,
     CheckboxModule,
     ProgressBarModule,
+    TranslateModule,
     BaseChartDirective
   ],
   providers: [MessageService],

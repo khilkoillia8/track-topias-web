@@ -4,20 +4,20 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-md-4 mb-4">
-      <p-card styleClass="task-card shadow text-white" header="Профіль користувача">
+      <p-card [header]="'home.userProfile' | translate" styleClass="task-card shadow text-white">
         <div class="text-center py-3">
-          <h5 class="section-title mb-2">{{ user?.username || 'Користувач' }}</h5>
+          <h5 class="section-title mb-2">{{ user?.username || ('home.user' | translate) }}</h5>
           <i class="pi pi-user fs-1 rounded-circle bg-secondary p-3 text-white"></i>
         </div>
 
         <div *ngIf="loading.level" class="text-center my-3 text-white">
           <i class="pi pi-spin pi-spinner fs-4"></i>
-          <span class="ms-2">Завантаження даних...</span>
+          <span class="ms-2">{{ 'home.loading' | translate }}</span>
         </div>
 
         <div *ngIf="!loading.level && userLevel" class="mt-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="badge bg-light text-dark px-3 py-2">Рівень {{ userLevel.level }}</span>
+            <span class="badge bg-light text-dark px-3 py-2">{{ 'home.level' | translate }} {{ userLevel.level }}</span>
             <span class="small text-white">{{ userLevel.score }} / {{ userLevel.scoreToNextLevel }} XP</span>
           </div>
 
@@ -26,14 +26,24 @@
             [showValue]="false"
             styleClass="w-100 bg-dark">
           </p-progressBar>
+          <div class="chart-container mt-1" style="background-color: #f5f5f5;">
+            <canvas
+              baseChart
+              [datasets]="radarChartData"
+              [labels]="radarChartLabels"
+              [type]="radarChartType"
+              class="radar-chart"
+            >
+            </canvas>
+          </div>
         </div>
       </p-card>
     </div>
     
     <div class="col-md-8">
-      <p-card header="Сьогоднішні завдання" styleClass="task-card shadow">
+      <p-card [header]="'home.todayTasks' | translate" styleClass="task-card shadow">
         <div class="task-section mb-4">
-          <h5 class="section-title">Завдання на сьогодні</h5>
+          <h5 class="section-title">{{ 'home.tasks' | translate }}</h5>
           <ul class="task-list">
             <li *ngFor="let mission of todayMissions" class="task-item" [ngClass]="{'completed': mission.completed}">
               <div class="d-flex justify-content-between align-items-center">
@@ -49,13 +59,13 @@
               </div>
             </li>
             <li *ngIf="todayMissions.length === 0" class="empty-message">
-              Немає завдань на сьогодні
+              {{ 'home.noTasks' | translate }}
             </li>
           </ul>
         </div>
         
         <div class="task-section">
-          <h5 class="section-title">Звички на сьогодні</h5>
+          <h5 class="section-title">{{ 'home.habits' | translate }}</h5>
           <ul class="task-list">
             <li *ngFor="let instance of todayHabitInstances" class="task-item" [ngClass]="{'completed': instance.completed}">
               <div class="d-flex justify-content-between align-items-center">
@@ -64,13 +74,13 @@
                          [checked]="instance.completed"
                          [disabled]="instance.completed"
                          (change)="toggleHabitInstanceComplete(instance)">
-                  <span class="task-title">{{ instance.habitTitle || 'Звичка' }}</span>
+                  <span class="task-title">{{ instance.habitTitle || 'home.user' | translate }}</span>
                 </div>
                 <span class="badge bg-primary ms-2">{{ instance.date | date:'shortDate' }}</span>
               </div>
             </li>
             <li *ngIf="todayHabitInstances.length === 0" class="empty-message">
-              Немає звичок на сьогодні
+              {{ 'home.noHabits' | translate }}
             </li>
           </ul>
         </div>

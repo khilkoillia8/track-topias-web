@@ -1,0 +1,27 @@
+{
+  "header": {
+    "home": "Home",
+    "tasks": "Tasks",
+    "habitTracking": "Habit Tracking",
+    "social": "Social",
+    "ranking": "Ranking",
+    "logout": "Log out",
+    "language": "Language"
+  },
+  "home": {
+    "userProfile": "User Profile",
+    "user": "User",
+    "loading": "Loading data...",
+    "level": "Level",
+    "todayTasks": "Today's Tasks",
+    "tasks": "Tasks for today",
+    "habits": "Habits for today",
+    "noTasks": "No tasks for today",
+    "noHabits": "No habits for today",
+    "priority": {
+      "high": "high",
+      "medium": "medium",
+      "low": "low"
+    }
+  }
+}

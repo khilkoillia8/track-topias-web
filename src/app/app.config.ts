@@ -1,13 +1,20 @@
-import {provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
-import {ApplicationConfig} from '@angular/core';
-import {provideRouter} from '@angular/router';
-import {definePreset} from "@primeng/themes";
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HttpClient, provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 
-import {routes} from './app.routes';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
-import {providePrimeNG} from 'primeng/config';
+import { routes } from './app.routes';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+import { providePrimeNG } from 'primeng/config';
+import { definePreset } from '@primeng/themes';
 import Aura from '@primeng/themes/aura';
 import {authInterceptor} from "./shared/auth/jwt.interceptor";
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+}
 
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -27,6 +34,7 @@ const MyPreset = definePreset(Aura, {
     }
   }
 });
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -35,5 +43,16 @@ export const appConfig: ApplicationConfig = {
         preset: MyPreset,
       }
     }),
-    provideHttpClient(withInterceptors([authInterceptor]), withFetch()), provideAnimationsAsync(),]
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        },
+        defaultLanguage: 'uk'
+      })
+    ),
+    provideHttpClient(withInterceptors([authInterceptor]), withFetch()), provideAnimationsAsync()
+  ]
 };
