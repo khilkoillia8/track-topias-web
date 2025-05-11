@@ -5,10 +5,10 @@
   
   <div class="row">
     <div class="col-12">
-      <h2 class="page-title text-white">Рейтинги користувачів</h2>
+      <h2 class="page-title text-white">{{ 'ranking.title' | translate }}</h2>
       
       <p-tabView>
-        <p-tabPanel header="Рейтинг за рівнем">
+        <p-tabPanel [header]="'ranking.levelRankingTab' | translate">
           <p-card styleClass="ranking-card">
             <div class="mb-3">
               <div class="p-inputgroup">
@@ -18,7 +18,7 @@
                 <input 
                   type="text" 
                   pInputText 
-                  placeholder="Пошук користувача" 
+                  [placeholder]="'ranking.searchUser' | translate" 
                   [(ngModel)]="levelSearchQuery"
                   (input)="filterLevelRatings()"
                 />
@@ -34,7 +34,7 @@
             
             <div *ngIf="loading.level" class="loading-container">
               <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '50%'}"></p-progressBar>
-              <p class="text-center mt-2">Завантаження даних...</p>
+              <p class="text-center mt-2">{{ 'ranking.loading' | translate }}</p>
             </div>
             
             <p-table 
@@ -44,14 +44,14 @@
               [paginator]="filteredLevelRatings.length > 10" 
               [rows]="10" 
               [showCurrentPageReport]="true"
-              currentPageReportTemplate="{first} - {last} з {totalRecords} користувачів"
+              [currentPageReportTemplate]="'ranking.pageReport' | translate"
               *ngIf="!loading.level"
             >
               <ng-template pTemplate="header">
                 <tr>
-                  <th style="width: 5rem" class="text-center">Ранг</th>
-                  <th>Користувач</th>
-                  <th style="width: 12rem">Рівень</th>
+                  <th style="width: 5rem" class="text-center">{{ 'ranking.rank' | translate }}</th>
+                  <th>{{ 'ranking.user' | translate }}</th>
+                  <th style="width: 12rem">{{ 'ranking.level' | translate }}</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rating let-i="rowIndex">
@@ -78,7 +78,7 @@
                 <tr>
                   <td colspan="3" class="text-center p-4">
                     <div class="empty-message">
-                      <p>Немає доступних даних для відображення</p>
+                      <p>{{ 'ranking.noData' | translate }}</p>
                     </div>
                   </td>
                 </tr>
@@ -87,7 +87,7 @@
           </p-card>
         </p-tabPanel>
         
-        <p-tabPanel header="Рейтинг за завданнями">
+        <p-tabPanel [header]="'ranking.tasksRankingTab' | translate">
           <p-card styleClass="ranking-card">
             <div class="mb-3">
               <div class="p-inputgroup">
@@ -97,7 +97,7 @@
                 <input 
                   type="text" 
                   pInputText 
-                  placeholder="Пошук користувача" 
+                  [placeholder]="'ranking.searchUser' | translate" 
                   [(ngModel)]="missionSearchQuery"
                   (input)="filterMissionRatings()"
                 />
@@ -113,7 +113,7 @@
             
             <div *ngIf="loading.missions" class="loading-container">
               <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '50%'}"></p-progressBar>
-              <p class="text-center mt-2">Завантаження даних...</p>
+              <p class="text-center mt-2">{{ 'ranking.loading' | translate }}</p>
             </div>
             
             <p-table 
@@ -123,14 +123,14 @@
               [paginator]="filteredMissionRatings.length > 10" 
               [rows]="10" 
               [showCurrentPageReport]="true"
-              currentPageReportTemplate="{first} - {last} з {totalRecords} користувачів"
+              [currentPageReportTemplate]="'ranking.pageReport' | translate"
               *ngIf="!loading.missions"
             >
               <ng-template pTemplate="header">
                 <tr>
-                  <th style="width: 5rem" class="text-center">Ранг</th>
-                  <th>Користувач</th>
-                  <th style="width: 12rem">Виконані завдання</th>
+                  <th style="width: 5rem" class="text-center">{{ 'ranking.rank' | translate }}</th>
+                  <th>{{ 'ranking.user' | translate }}</th>
+                  <th style="width: 12rem">{{ 'ranking.completedTasks' | translate }}</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rating>
@@ -157,7 +157,7 @@
                 <tr>
                   <td colspan="3" class="text-center p-4">
                     <div class="empty-message">
-                      <p>Немає доступних даних для відображення</p>
+                      <p>{{ 'ranking.noData' | translate }}</p>
                     </div>
                   </td>
                 </tr>
@@ -166,7 +166,7 @@
           </p-card>
         </p-tabPanel>
         
-        <p-tabPanel header="Рейтинг за стріками звичок">
+        <p-tabPanel [header]="'ranking.habitStreakRankingTab' | translate">
           <p-card styleClass="ranking-card">
             <div class="mb-3">
               <div class="p-inputgroup">
@@ -176,7 +176,7 @@
                 <input 
                   type="text" 
                   pInputText 
-                  placeholder="Пошук користувача" 
+                  [placeholder]="'ranking.searchUser' | translate" 
                   [(ngModel)]="habitStreakSearchQuery"
                   (input)="filterHabitStreakRatings()"
                 />
@@ -192,7 +192,7 @@
             
             <div *ngIf="loading.habitStreak" class="loading-container">
               <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '50%'}"></p-progressBar>
-              <p class="text-center mt-2">Завантаження даних...</p>
+              <p class="text-center mt-2">{{ 'ranking.loading' | translate }}</p>
             </div>
             
             <p-table 
@@ -202,14 +202,14 @@
               [paginator]="filteredHabitStreakRatings.length > 10" 
               [rows]="10" 
               [showCurrentPageReport]="true"
-              currentPageReportTemplate="{first} - {last} з {totalRecords} користувачів"
+              [currentPageReportTemplate]="'ranking.pageReport' | translate"
               *ngIf="!loading.habitStreak"
             >
               <ng-template pTemplate="header">
                 <tr>
-                  <th style="width: 5rem" class="text-center">Ранг</th>
-                  <th>Користувач</th>
-                  <th style="width: 12rem">Найкращий стрік</th>
+                  <th style="width: 5rem" class="text-center">{{ 'ranking.rank' | translate }}</th>
+                  <th>{{ 'ranking.user' | translate }}</th>
+                  <th style="width: 12rem">{{ 'ranking.bestStreak' | translate }}</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rating>
@@ -228,7 +228,7 @@
                     </div>
                   </td>
                   <td>
-                    <span class="value-badge streak-badge">{{ rating.value }} днів</span>
+                    <span class="value-badge streak-badge">{{ rating.value }} {{ 'ranking.days' | translate }}</span>
                   </td>
                 </tr>
               </ng-template>
@@ -236,7 +236,7 @@
                 <tr>
                   <td colspan="3" class="text-center p-4">
                     <div class="empty-message">
-                      <p>Немає доступних даних для відображення</p>
+                      <p>{{ 'ranking.noData' | translate }}</p>
                     </div>
                   </td>
                 </tr>
@@ -245,7 +245,7 @@
           </p-card>
         </p-tabPanel>
         
-        <p-tabPanel header="Рейтинг за виконанням звичок">
+        <p-tabPanel [header]="'ranking.habitCompletionRankingTab' | translate">
           <p-card styleClass="ranking-card">
             <div class="mb-3">
               <div class="p-inputgroup">
@@ -255,7 +255,7 @@
                 <input
                   type="text" 
                   pInputText 
-                  placeholder="Пошук користувача" 
+                  [placeholder]="'ranking.searchUser' | translate" 
                   [(ngModel)]="habitCompletionSearchQuery"
                   (input)="filterHabitCompletionRatings()"
                 />
@@ -271,7 +271,7 @@
             
             <div *ngIf="loading.habitCompletions" class="loading-container">
               <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '50%'}"></p-progressBar>
-              <p class="text-center mt-2">Завантаження даних...</p>
+              <p class="text-center mt-2">{{ 'ranking.loading' | translate }}</p>
             </div>
             
             <p-table 
@@ -281,14 +281,14 @@
               [paginator]="filteredHabitCompletionRatings.length > 10" 
               [rows]="10" 
               [showCurrentPageReport]="true"
-              currentPageReportTemplate="{first} - {last} з {totalRecords} користувачів"
+              [currentPageReportTemplate]="'ranking.pageReport' | translate"
               *ngIf="!loading.habitCompletions"
             >
               <ng-template pTemplate="header">
                 <tr>
-                  <th style="width: 5rem" class="text-center">Ранг</th>
-                  <th>Користувач</th>
-                  <th style="width: 12rem">Виконані звички</th>
+                  <th style="width: 5rem" class="text-center">{{ 'ranking.rank' | translate }}</th>
+                  <th>{{ 'ranking.user' | translate }}</th>
+                  <th style="width: 12rem">{{ 'ranking.completedHabits' | translate }}</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rating>
@@ -315,7 +315,7 @@
                 <tr>
                   <td colspan="3" class="text-center p-4">
                     <div class="empty-message">
-                      <p>Немає доступних даних для відображення</p>
+                      <p>{{ 'ranking.noData' | translate }}</p>
                     </div>
                   </td>
                 </tr>

@@ -210,5 +210,30 @@
       "loadLevels": "Не вдалося завантажити дані про рівні користувачів",
       "loadUserDetails": "Не вдалося завантажити дані користувача"
     }
+  },
+  "ranking": {
+    "title": "Рейтинги користувачів",
+    "levelRankingTab": "Рейтинг за рівнем",
+    "tasksRankingTab": "Рейтинг за завданнями",
+    "habitStreakRankingTab": "Рейтинг за стріками звичок",
+    "habitCompletionRankingTab": "Рейтинг за виконанням звичок",
+    "searchUser": "Пошук користувача",
+    "loading": "Завантаження даних...",
+    "pageReport": "{first} - {last} з {totalRecords} користувачів",
+    "rank": "Ранг",
+    "user": "Користувач",
+    "level": "Рівень",
+    "completedTasks": "Виконані завдання",
+    "bestStreak": "Найкращий стрік",
+    "days": "днів",
+    "completedHabits": "Виконані звички",
+    "noData": "Немає доступних даних для відображення",
+    "error-label": "Помилка",
+    "error": {
+      "loadLevelRatings": "Не вдалося завантажити рейтинг за рівнем",
+      "loadMissionRatings": "Не вдалося завантажити рейтинг за завданнями",
+      "loadHabitStreakRatings": "Не вдалося завантажити рейтинг за стріками звичок",
+      "loadHabitCompletionRatings": "Не вдалося завантажити рейтинг за виконанням звичок"
+    }
   }
 }

@@ -17,6 +17,7 @@ import { TagModule } from 'primeng/tag';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { AvatarModule } from 'primeng/avatar';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ranking-page',
@@ -34,7 +35,8 @@ import { SkeletonModule } from 'primeng/skeleton';
     TagModule,
     ProgressBarModule,
     AvatarModule,
-    SkeletonModule
+    SkeletonModule,
+    TranslateModule
   ],
   providers: [MessageService],
   templateUrl: './ranking-page.component.html',
@@ -69,7 +71,8 @@ export class RankingPageComponent implements OnInit, OnDestroy {
   
   constructor(
     private statisticsService: StatisticsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translateService: TranslateService
   ) {}
   
   ngOnInit(): void {
@@ -109,10 +112,12 @@ export class RankingPageComponent implements OnInit, OnDestroy {
         this.loading.level = false;
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося завантажити рейтинг за рівнем'
+        this.translateService.get(['ranking.error-label', 'ranking.error.loadLevelRatings']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['ranking.error-label'],
+            detail: translations['ranking.error.loadLevelRatings']
+          });
         });
         console.error('Error loading level ratings', err);
         this.loading.level = false;
@@ -131,10 +136,12 @@ export class RankingPageComponent implements OnInit, OnDestroy {
         this.loading.missions = false;
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося завантажити рейтинг за завданнями'
+        this.translateService.get(['ranking.error-label', 'ranking.error.loadMissionRatings']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['ranking.error-label'],
+            detail: translations['ranking.error.loadMissionRatings']
+          });
         });
         console.error('Error loading mission ratings', err);
         this.loading.missions = false;
@@ -153,10 +160,12 @@ export class RankingPageComponent implements OnInit, OnDestroy {
         this.loading.habitStreak = false;
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося завантажити рейтинг за стріками звичок'
+        this.translateService.get(['ranking.error-label', 'ranking.error.loadHabitStreakRatings']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['ranking.error-label'],
+            detail: translations['ranking.error.loadHabitStreakRatings']
+          });
         });
         console.error('Error loading habit streak ratings', err);
         this.loading.habitStreak = false;
@@ -175,10 +184,12 @@ export class RankingPageComponent implements OnInit, OnDestroy {
         this.loading.habitCompletions = false;
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося завантажити рейтинг за виконанням звичок'
+        this.translateService.get(['ranking.error-label', 'ranking.error.loadHabitCompletionRatings']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['ranking.error-label'],
+            detail: translations['ranking.error.loadHabitCompletionRatings']
+          });
         });
         console.error('Error loading habit completion ratings', err);
         this.loading.habitCompletions = false;

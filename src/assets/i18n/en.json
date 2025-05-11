@@ -210,5 +210,30 @@
       "loadLevels": "Failed to load user level data",
       "loadUserDetails": "Failed to load user data"
     }
+  },
+  "ranking": {
+    "title": "User Rankings",
+    "levelRankingTab": "Level Ranking",
+    "tasksRankingTab": "Tasks Ranking",
+    "habitStreakRankingTab": "Habit Streak Ranking",
+    "habitCompletionRankingTab": "Habit Completion Ranking",
+    "searchUser": "Search user",
+    "loading": "Loading data...",
+    "pageReport": "{first} - {last} of {totalRecords} users",
+    "rank": "Rank",
+    "user": "User",
+    "level": "Level",
+    "completedTasks": "Completed Tasks",
+    "bestStreak": "Best Streak",
+    "days": "days",
+    "completedHabits": "Completed Habits",
+    "noData": "No data available for display",
+    "error-label": "Error",
+    "error": {
+      "loadLevelRatings": "Failed to load level rankings",
+      "loadMissionRatings": "Failed to load task rankings",
+      "loadHabitStreakRatings": "Failed to load habit streak rankings",
+      "loadHabitCompletionRatings": "Failed to load habit completion rankings"
+    }
   }
 }
