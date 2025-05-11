@@ -22,7 +22,21 @@
       "high": "high",
       "medium": "medium",
       "low": "low"
-    }
+    },
+    "viewStreaks": "View Habit Streaks",
+    "habitStreaks": "Your Habit Streaks",
+    "habitTitle": "Habit Title",
+    "streaks": "Streaks",
+    "streakInfo": "{{current}} days (best: {{best}})",
+    "noStreakData": "No streak data available",
+    "status": "Status",
+    "completed": "Completed",
+    "active": "Active",
+    "noHabitsYet": "No habits created yet",
+    "error": {
+      "loadStreaks": "Failed to load habit streaks"
+    },
+    "close": "Close"
   },
   "start": {
     "header": {

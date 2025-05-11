@@ -22,7 +22,21 @@
       "high": "high",
       "medium": "medium",
       "low": "low"
-    }
+    },
+    "viewStreaks": "Переглянути серії звичок",
+    "habitStreaks": "Ваші серії звичок",
+    "habitTitle": "Назва звички",
+    "streaks": "Серії",
+    "streakInfo": "{{current}} днів (найкращий: {{best}})",
+    "noStreakData": "Дані про серії відсутні",
+    "status": "Статус",
+    "completed": "Виконано",
+    "active": "Активна",
+    "noHabitsYet": "Ще немає створених звичок",
+    "error": {
+      "loadStreaks": "Не вдалося завантажити дані про серії звичок"
+    },
+    "close": "Закрити"
   },
   "start": {
     "header": {

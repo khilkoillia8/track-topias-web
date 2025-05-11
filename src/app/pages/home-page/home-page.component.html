@@ -26,6 +26,10 @@
             [showValue]="false"
             styleClass="w-100 bg-dark">
           </p-progressBar>
+          <button pButton icon="pi pi-chart-line"
+                  [label]="'home.viewStreaks' | translate"
+                  class="p-button-outlined p-button-info mt-2"
+                  (click)="showStreakModal()"></button>
           <div class="chart-container mt-1" style="background-color: #f5f5f5;">
             <canvas
               baseChart
@@ -88,3 +92,45 @@
     </div>
   </div>
 </div>
+
+<p-dialog [(visible)]="streakModalVisible" 
+          [header]="'home.habitStreaks' | translate"
+          [modal]="true"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <div class="streak-modal-content">
+    <p-table [value]="userHabits" 
+             [loading]="loading.streaks"
+             styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 40%">{{ 'home.habitTitle' | translate }}</th>
+          <th style="width: 40%">{{ 'home.streaks' | translate }}</th>
+          <th style="width: 20%">{{ 'home.status' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-habit>
+        <tr>
+          <td [ngClass]="{'text-decoration-line-through': habit.completed}">{{ habit.title }}</td>
+          <td>{{ getStreakInfo(habit) }}</td>
+          <td>
+            <span class="badge" [ngClass]="habit.completed ? 'bg-success' : 'bg-secondary'">
+              {{ habit.completed ? ('home.completed' | translate) : ('home.active' | translate) }}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3" class="text-center">
+            {{ 'home.noHabitsYet' | translate }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton icon="pi pi-check" [label]="'home.close' | translate" (click)="hideStreakModal()"></button>
+  </ng-template>
+</p-dialog>

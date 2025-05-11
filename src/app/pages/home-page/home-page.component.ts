@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
-import {MessageService, PrimeTemplate} from "primeng/api";
+import {MessageService} from "primeng/api";
 import {Card} from 'primeng/card';
 import {UIChart} from "primeng/chart";
 import {CheckboxModule} from 'primeng/checkbox';
@@ -15,12 +15,16 @@ import {AuthService} from '../../shared/auth/services/auth.service';
 import {UserService} from '../../shared/auth/services/user-service';
 import {HabitInstanceDto} from '../../shared/habit-instance/models/habit-instance.model';
 import {HabitInstanceService} from '../../shared/habit-instance/services/habit-instance.service';
+import {HabitDto} from '../../shared/habit/models/habit.model';
 import {HabitService} from '../../shared/habit/services/habit.service';
 import {MainHeaderComponent} from "../../shared/main-header/main-header.component";
 import {MissionCreationDto, MissionDto} from '../../shared/mission/models/mission.model';
 import {MissionService} from '../../shared/mission/services/mission.service';
 import {StatisticsService} from "../../shared/statistics/services/statistics.service";
-import {TranslateModule} from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {DialogModule} from 'primeng/dialog';
+import {ButtonModule} from 'primeng/button';
+import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-home-page',
@@ -34,7 +38,9 @@ import {TranslateModule} from '@ngx-translate/core';
     ProgressBarModule,
     TranslateModule,
     BaseChartDirective,
-    UIChart
+    DialogModule,
+    ButtonModule,
+    TableModule
   ],
   providers: [MessageService],
   templateUrl: './home-page.component.html',
@@ -47,8 +53,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
   todayHabitInstances: HabitInstanceDto[] = [];
   userLevel: Level | null = null;
   loading = {
-    level: false
+    level: false,
+    streaks: false
   };
+  
+  // New properties for streak modal
+  streakModalVisible: boolean = false;
+  userHabits: HabitDto[] = [];
 
   public radarChartData = [
     {
@@ -76,7 +87,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     private habitService: HabitService,
     private habitInstanceService: HabitInstanceService,
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -291,5 +303,42 @@ export class HomePageComponent implements OnInit, OnDestroy {
       return (this.userLevel.score / this.userLevel.scoreToNextLevel) * 100;
     }
     return 0;
+  }
+
+  showStreakModal() {
+    this.streakModalVisible = true;
+    this.loading.streaks = true;
+    
+    this.habitService.getAllHabits().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (habits) => {
+        this.userHabits = habits;
+        this.loading.streaks = false;
+      },
+      error: (err) => {
+        this.translateService.get(['home.error', 'home.error.loadStreaks']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['home.error'],
+            detail: translations['home.error.loadStreaks']
+          });
+        });
+        console.error('Error loading habit streaks', err);
+        this.loading.streaks = false;
+      }
+    });
+  }
+  
+  hideStreakModal() {
+    this.streakModalVisible = false;
+  }
+
+  getStreakInfo(habit: { currentStreak: any; bestStreak: any; }): string {
+    return this.translateService.instant('home.streakInfo', {
+      current: habit.currentStreak,
+      best: habit.bestStreak
+    });
+
   }
 }
