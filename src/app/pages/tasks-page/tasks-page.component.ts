@@ -26,6 +26,7 @@ import { HabitDto, HabitCreationDto } from '../../shared/habit/models/habit.mode
 import { MissionDto, MissionCreationDto } from '../../shared/mission/models/mission.model';
 import { TopicDto, TopicCreationDto } from '../../shared/topic/models/topic.model';
 import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tasks-page',
@@ -51,7 +52,8 @@ import { RouterLink } from '@angular/router';
     SelectButtonModule,
     MultiSelectModule,
     ColorPickerModule,
-    RouterLink
+    RouterLink,
+    TranslateModule
   ],
   providers: [MessageService],
   templateUrl: './tasks-page.component.html',
@@ -76,19 +78,19 @@ export class TasksPageComponent implements OnInit {
   topics: TopicDto[] = [];
 
   priorityOptions = [
-    {label: 'Низький', value: 'low'},
-    {label: 'Середній', value: 'medium'},
-    {label: 'Високий', value: 'high'}
+    {label: 'tasks.priority.low', value: 'low'},
+    {label: 'tasks.priority.medium', value: 'medium'},
+    {label: 'tasks.priority.high', value: 'high'}
   ];
 
   weekdayOptions = [
-    {label: 'Понеділок', value: 'monday'},
-    {label: 'Вівторок', value: 'tuesday'},
-    {label: 'Середа', value: 'wednesday'},
-    {label: 'Четвер', value: 'thursday'},
-    {label: 'П\'ятниця', value: 'friday'},
-    {label: 'Субота', value: 'saturday'},
-    {label: 'Неділя', value: 'sunday'}
+    {label: 'tasks.weekdays.monday', value: 'monday'},
+    {label: 'tasks.weekdays.tuesday', value: 'tuesday'},
+    {label: 'tasks.weekdays.wednesday', value: 'wednesday'},
+    {label: 'tasks.weekdays.thursday', value: 'thursday'},
+    {label: 'tasks.weekdays.friday', value: 'friday'},
+    {label: 'tasks.weekdays.saturday', value: 'saturday'},
+    {label: 'tasks.weekdays.sunday', value: 'sunday'}
   ];
 
   missionForm: FormGroup;
@@ -100,7 +102,8 @@ export class TasksPageComponent implements OnInit {
     private messageService: MessageService,
     private habitService: HabitService,
     private missionService: MissionService,
-    private topicService: TopicService
+    private topicService: TopicService,
+    private translateService: TranslateService
   ) {
     this.missionForm = this.fb.group({
       id: [null],
@@ -129,7 +132,39 @@ export class TasksPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.translateOptions();
     this.loadData();
+  }
+
+  translateOptions() {
+    this.translateService.get([
+      'tasks.priority.low',
+      'tasks.priority.medium',
+      'tasks.priority.high',
+      'tasks.weekdays.monday',
+      'tasks.weekdays.tuesday',
+      'tasks.weekdays.wednesday',
+      'tasks.weekdays.thursday',
+      'tasks.weekdays.friday',
+      'tasks.weekdays.saturday',
+      'tasks.weekdays.sunday'
+    ]).subscribe(translations => {
+      this.priorityOptions = [
+        {label: translations['tasks.priority.low'], value: 'low'},
+        {label: translations['tasks.priority.medium'], value: 'medium'},
+        {label: translations['tasks.priority.high'], value: 'high'}
+      ];
+      
+      this.weekdayOptions = [
+        {label: translations['tasks.weekdays.monday'], value: 'monday'},
+        {label: translations['tasks.weekdays.tuesday'], value: 'tuesday'},
+        {label: translations['tasks.weekdays.wednesday'], value: 'wednesday'},
+        {label: translations['tasks.weekdays.thursday'], value: 'thursday'},
+        {label: translations['tasks.weekdays.friday'], value: 'friday'},
+        {label: translations['tasks.weekdays.saturday'], value: 'saturday'},
+        {label: translations['tasks.weekdays.sunday'], value: 'sunday'}
+      ];
+    });
   }
 
   loadData() {
@@ -144,10 +179,12 @@ export class TasksPageComponent implements OnInit {
         this.topics = topics;
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося завантажити теми'
+        this.translateService.get(['tasks.error', 'tasks.error.loadTopics']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['tasks.error'],
+            detail: translations['tasks.error.loadTopics']
+          });
         });
         console.error('Error loading topics', err);
       }
@@ -176,10 +213,12 @@ export class TasksPageComponent implements OnInit {
         this.missions = missions;
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося завантажити завдання'
+        this.translateService.get(['tasks.error', 'tasks.error.loadMissions']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['tasks.error'],
+            detail: translations['tasks.error.loadMissions']
+          });
         });
         console.error('Error loading missions', err);
       }
@@ -192,10 +231,12 @@ export class TasksPageComponent implements OnInit {
         this.habits = habits;
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося завантажити звички'
+        this.translateService.get(['tasks.error', 'tasks.error.loadHabits']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['tasks.error'],
+            detail: translations['tasks.error.loadHabits']
+          });
         });
         console.error('Error loading habits', err);
       }
@@ -260,10 +301,12 @@ export class TasksPageComponent implements OnInit {
 
   saveMission() {
     if (this.missionForm.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Помилка',
-        detail: 'Будь ласка, заповніть всі обов\'язкові поля'
+      this.translateService.get(['tasks.error', 'tasks.error.fillRequiredFields']).subscribe(translations => {
+        this.messageService.add({
+          severity: 'error',
+          summary: translations['tasks.error'],
+          detail: translations['tasks.error.fillRequiredFields']
+        });
       });
       return;
     }
@@ -288,18 +331,22 @@ export class TasksPageComponent implements OnInit {
               this.selectedMission = updatedMission;
             }
           }
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Успішно',
-            detail: 'Завдання успішно оновлено'
+          this.translateService.get(['tasks.success', 'tasks.success.missionUpdated']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'success',
+              summary: translations['tasks.success'],
+              detail: translations['tasks.success.missionUpdated']
+            });
           });
           this.missionDialogVisible = false;
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося оновити завдання'
+          this.translateService.get(['tasks.error', 'tasks.error.missionUpdate']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['tasks.error'],
+              detail: translations['tasks.error.missionUpdate']
+            });
           });
           console.error('Error updating mission', err);
         }
@@ -308,18 +355,22 @@ export class TasksPageComponent implements OnInit {
       this.missionService.createMission(missionData).subscribe({
         next: (newMission) => {
           this.missions.push(newMission);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Успішно',
-            detail: 'Завдання успішно створено'
+          this.translateService.get(['tasks.success', 'tasks.success.missionCreated']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'success',
+              summary: translations['tasks.success'],
+              detail: translations['tasks.success.missionCreated']
+            });
           });
           this.missionDialogVisible = false;
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося створити завдання'
+          this.translateService.get(['tasks.error', 'tasks.error.missionCreate']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['tasks.error'],
+              detail: translations['tasks.error.missionCreate']
+            });
           });
           console.error('Error creating mission', err);
         }
@@ -329,10 +380,12 @@ export class TasksPageComponent implements OnInit {
 
   saveHabit() {
     if (this.habitForm.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Помилка',
-        detail: 'Будь ласка, заповніть всі обов\'язкові поля'
+      this.translateService.get(['tasks.error', 'tasks.error.fillRequiredFields']).subscribe(translations => {
+        this.messageService.add({
+          severity: 'error',
+          summary: translations['tasks.error'],
+          detail: translations['tasks.error.fillRequiredFields']
+        });
       });
       return;
     }
@@ -356,18 +409,22 @@ export class TasksPageComponent implements OnInit {
               this.selectedHabit = updatedHabit;
             }
           }
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Успішно',
-            detail: 'Звичку успішно оновлено'
+          this.translateService.get(['tasks.success', 'tasks.success.habitUpdated']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'success',
+              summary: translations['tasks.success'],
+              detail: translations['tasks.success.habitUpdated']
+            });
           });
           this.habitDialogVisible = false;
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося оновити звичку'
+          this.translateService.get(['tasks.error', 'tasks.error.habitUpdate']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['tasks.error'],
+              detail: translations['tasks.error.habitUpdate']
+            });
           });
           console.error('Error updating habit', err);
         }
@@ -376,18 +433,22 @@ export class TasksPageComponent implements OnInit {
       this.habitService.createHabit(habitData).subscribe({
         next: (newHabit) => {
           this.habits.push(newHabit);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Успішно',
-            detail: 'Звичку успішно створено'
+          this.translateService.get(['tasks.success', 'tasks.success.habitCreated']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'success',
+              summary: translations['tasks.success'],
+              detail: translations['tasks.success.habitCreated']
+            });
           });
           this.habitDialogVisible = false;
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося створити звичку'
+          this.translateService.get(['tasks.error', 'tasks.error.habitCreate']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['tasks.error'],
+              detail: translations['tasks.error.habitCreate']
+            });
           });
           console.error('Error creating habit', err);
         }
@@ -417,10 +478,12 @@ export class TasksPageComponent implements OnInit {
 
   saveTopic() {
     if (this.topicForm.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Помилка',
-        detail: 'Будь ласка, заповніть всі обов\'язкові поля'
+      this.translateService.get(['tasks.error', 'tasks.error.fillRequiredFields']).subscribe(translations => {
+        this.messageService.add({
+          severity: 'error',
+          summary: translations['tasks.error'],
+          detail: translations['tasks.error.fillRequiredFields']
+        });
       });
       return;
     }
@@ -443,19 +506,23 @@ export class TasksPageComponent implements OnInit {
           if (index !== -1) {
             this.topics[index] = updatedTopic;
           }
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Успішно',
-            detail: 'Тему успішно оновлено'
+          this.translateService.get(['tasks.success', 'tasks.success.topicUpdated']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'success',
+              summary: translations['tasks.success'],
+              detail: translations['tasks.success.topicUpdated']
+            });
           });
           
           this.topics = [...this.topics];
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося оновити тему'
+          this.translateService.get(['tasks.error', 'tasks.error.topicUpdate']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['tasks.error'],
+              detail: translations['tasks.error.topicUpdate']
+            });
           });
           console.error('Error updating topic', err);
         }
@@ -471,17 +538,21 @@ export class TasksPageComponent implements OnInit {
             this.habitForm.patchValue({ topicIds: currentHabitTopics });
           }
           
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Успішно',
-            detail: 'Тему успішно створено'
+          this.translateService.get(['tasks.success', 'tasks.success.topicCreated']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'success',
+              summary: translations['tasks.success'],
+              detail: translations['tasks.success.topicCreated']
+            });
           });
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося створити тему'
+          this.translateService.get(['tasks.error', 'tasks.error.topicCreate']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['tasks.error'],
+              detail: translations['tasks.error.topicCreate']
+            });
           });
           console.error('Error creating topic', err);
         }
@@ -501,17 +572,21 @@ export class TasksPageComponent implements OnInit {
           this.selectedMission = null;
         }
         
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Успішно',
-          detail: 'Завдання успішно видалено'
+        this.translateService.get(['tasks.success', 'tasks.success.missionDeleted']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'success',
+            summary: translations['tasks.success'],
+            detail: translations['tasks.success.missionDeleted']
+          });
         });
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося видалити завдання'
+        this.translateService.get(['tasks.error', 'tasks.error.missionDelete']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['tasks.error'],
+            detail: translations['tasks.error.missionDelete']
+          });
         });
         console.error('Error deleting mission', err);
       }
@@ -530,17 +605,21 @@ export class TasksPageComponent implements OnInit {
           this.selectedHabit = null;
         }
         
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Успішно',
-          detail: 'Звичку успішно видалено'
+        this.translateService.get(['tasks.success', 'tasks.success.habitDeleted']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'success',
+            summary: translations['tasks.success'],
+            detail: translations['tasks.success.habitDeleted']
+          });
         });
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося видалити звичку'
+        this.translateService.get(['tasks.error', 'tasks.error.habitDelete']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['tasks.error'],
+            detail: translations['tasks.error.habitDelete']
+          });
         });
         console.error('Error deleting habit', err);
       }
@@ -568,10 +647,12 @@ export class TasksPageComponent implements OnInit {
           this.selectedMission.completed = !mission.completed;
         }
         
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося оновити статус завдання'
+        this.translateService.get(['tasks.error', 'tasks.error.missionStatusUpdate']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['tasks.error'],
+            detail: translations['tasks.error.missionStatusUpdate']
+          });
         });
         console.error('Error updating mission status', err);
       }
@@ -598,10 +679,12 @@ export class TasksPageComponent implements OnInit {
           this.selectedHabit.completed = !habit.completed;
         }
         
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося оновити статус звички'
+        this.translateService.get(['tasks.error', 'tasks.error.habitStatusUpdate']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['tasks.error'],
+            detail: translations['tasks.error.habitStatusUpdate']
+          });
         });
         console.error('Error updating habit status', err);
       }

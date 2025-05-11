@@ -23,5 +23,85 @@
       "medium": "medium",
       "low": "low"
     }
+  },
+  "tasks": {
+    "missions": "Завдання",
+    "habits": "Звички",
+    "newMission": "Нове завдання",
+    "editMission": "Редагування завдання",
+    "newHabit": "Нова звичка",
+    "editHabit": "Редагування звички",
+    "newTopic": "Нова тема",
+    "editTopic": "Редагування теми",
+    "habitTracking": "Відстеження звичок",
+    "status": "Статус",
+    "title": "Назва",
+    "priority-label": "Пріоритет",
+    "dueDate": "Термін виконання",
+    "frequency": "Частота",
+    "description": "Опис",
+    "topics": "Теми",
+    "weekdays-label": "Дні тижня",
+    "name": "Назва",
+    "color": "Колір",
+    "edit": "Редагувати",
+    "delete": "Видалити",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "completed": "Виконано",
+    "notCompleted": "Не виконано",
+    "markAsCompleted": "Позначити як виконане",
+    "selectTopics": "Виберіть теми",
+    "selectWeekdays": "Виберіть дні тижня",
+    "search": "Пошук",
+    "noMissions": "Поки немає завданнь. Створіть ваше перше завдання!",
+    "noHabits": "Поки немає звичок. Створіть вашу першу звичку!",
+    "priority": {
+      "high": "Високий",
+      "medium": "Середній",
+      "low": "Низький"
+    },
+    "weekdays": {
+      "monday": "Понеділок",
+      "tuesday": "Вівторок",
+      "wednesday": "Середа",
+      "thursday": "Четвер",
+      "friday": "П'ятниця",
+      "saturday": "Субота",
+      "sunday": "Неділя"
+    },
+    "validation": {
+      "titleRequired": "Назва обов'язкова",
+      "nameRequired": "Назва обов'язкова",
+      "dueDateRequired": "Термін виконання обов'язковий",
+      "weekdaysRequired": "Оберіть хоча б один день тижня",
+      "topicsRequired": "Оберіть хоча б одну тему"
+    },
+    "error": {
+      "fillRequiredFields": "Будь ласка, заповніть всі обов'язкові поля",
+      "loadMissions": "Не вдалося завантажити завдання",
+      "loadHabits": "Не вдалося завантажити звички",
+      "loadTopics": "Не вдалося завантажити теми",
+      "missionCreate": "Не вдалося створити завдання",
+      "missionUpdate": "Не вдалося оновити завдання",
+      "missionDelete": "Не вдалося видалити завдання",
+      "missionStatusUpdate": "Не вдалося оновити статус завдання",
+      "habitCreate": "Не вдалося створити звичку",
+      "habitUpdate": "Не вдалося оновити звичку",
+      "habitDelete": "Не вдалося видалити звичку",
+      "habitStatusUpdate": "Не вдалося оновити статус звички",
+      "topicCreate": "Не вдалося створити тему",
+      "topicUpdate": "Не вдалося оновити тему"
+    },
+    "success": {
+      "missionCreated": "Завдання успішно створено",
+      "missionUpdated": "Завдання успішно оновлено",
+      "missionDeleted": "Завдання успішно видалено",
+      "habitCreated": "Звичку успішно створено",
+      "habitUpdated": "Звичку успішно оновлено",
+      "habitDeleted": "Звичку успішно видалено",
+      "topicCreated": "Тему успішно створено",
+      "topicUpdated": "Тему успішно оновлено"
+    }
   }
 }

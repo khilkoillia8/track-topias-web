@@ -23,5 +23,85 @@
       "medium": "medium",
       "low": "low"
     }
+  },
+  "tasks": {
+    "missions": "Tasks",
+    "habits": "Habits",
+    "newMission": "New Task",
+    "editMission": "Edit Task",
+    "newHabit": "New Habit",
+    "editHabit": "Edit Habit",
+    "newTopic": "New Topic",
+    "editTopic": "Edit Topic",
+    "habitTracking": "Habit Tracking",
+    "status": "Status",
+    "title": "Title",
+    "priority-label": "Priority",
+    "dueDate": "Due Date",
+    "frequency": "Frequency",
+    "description": "Description",
+    "topics": "Topics",
+    "weekdays-label": "Weekdays",
+    "name": "Name",
+    "color": "Color",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "completed": "Completed",
+    "notCompleted": "Not Completed",
+    "markAsCompleted": "Mark as completed",
+    "selectTopics": "Select topics",
+    "selectWeekdays": "Select weekdays",
+    "search": "Search",
+    "noMissions": "No tasks yet. Create your first task!",
+    "noHabits": "No habits yet. Create your first habit!",
+    "priority": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "weekdays": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "nameRequired": "Name is required",
+      "dueDateRequired": "Due date is required",
+      "weekdaysRequired": "Select at least one day",
+      "topicsRequired": "Select at least one topic"
+    },
+    "error": {
+      "fillRequiredFields": "Please fill in all required fields",
+      "loadMissions": "Failed to load tasks",
+      "loadHabits": "Failed to load habits",
+      "loadTopics": "Failed to load topics",
+      "missionCreate": "Failed to create task",
+      "missionUpdate": "Failed to update task",
+      "missionDelete": "Failed to delete task",
+      "missionStatusUpdate": "Failed to update task status",
+      "habitCreate": "Failed to create habit",
+      "habitUpdate": "Failed to update habit",
+      "habitDelete": "Failed to delete habit",
+      "habitStatusUpdate": "Failed to update habit status",
+      "topicCreate": "Failed to create topic",
+      "topicUpdate": "Failed to update topic"
+    },
+    "success": {
+      "missionCreated": "Task created successfully",
+      "missionUpdated": "Task updated successfully",
+      "missionDeleted": "Task deleted successfully",
+      "habitCreated": "Habit created successfully",
+      "habitUpdated": "Habit updated successfully",
+      "habitDeleted": "Habit deleted successfully",
+      "topicCreated": "Topic created successfully",
+      "topicUpdated": "Topic updated successfully"
+    }
   }
 }
