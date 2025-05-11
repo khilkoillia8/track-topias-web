@@ -103,5 +103,64 @@
       "topicCreated": "Topic created successfully",
       "topicUpdated": "Topic updated successfully"
     }
+  },
+  "habitsTracking": {
+    "title": "Habit Tracking",
+    "refreshTable": "Refresh Table",
+    "date": "Date",
+    "habit": "Habit",
+    "allHabits": "All Habits",
+    "filter": "Filter",
+    "completed": "Completed",
+    "pending": "Pending",
+    "search": "Search",
+    "searchHabits": "Search habits...",
+    "reset": "Reset",
+    "status": "Status",
+    "habitName": "Habit Name",
+    "description": "Description",
+    "weekdays-day": "Weekdays",
+    "streak": "Streak",
+    "actions": "Actions",
+    "noDescription": "No description",
+    "noInstances": "No habit instances found",
+    "unknownHabit": "Unknown habit",
+    "notSpecified": "Not specified",
+    "noData": "No data",
+    "streakInfo": "{{current}} days (best: {{best}})",
+    "frequency": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
+      "undefined": "Undefined"
+    },
+    "weekdays": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "short": {
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thursday": "Thu",
+        "friday": "Fri",
+        "saturday": "Sat",
+        "sunday": "Sun"
+      }
+    },
+    "error": {
+      "loadHabits": "Failed to load habits",
+      "loadInstances": "Failed to load habit instances",
+      "updateStatus": "Failed to update habit status",
+      "regenerate": "Failed to refresh habit instances"
+    },
+    "success": {
+      "habitCompleted": "Habit marked as completed",
+      "instancesUpdated": "Habit instances updated successfully"
+    }
   }
 }

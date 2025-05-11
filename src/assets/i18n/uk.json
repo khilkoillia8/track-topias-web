@@ -103,5 +103,64 @@
       "topicCreated": "Тему успішно створено",
       "topicUpdated": "Тему успішно оновлено"
     }
+  },
+  "habitsTracking": {
+    "title": "Відстеження звичок",
+    "refreshTable": "Оновити таблицю",
+    "date": "Дата",
+    "habit": "Звичка",
+    "allHabits": "Всі звички",
+    "filter": "Фільтр",
+    "completed": "Виконані",
+    "pending": "Невиконані",
+    "search": "Пошук",
+    "searchHabits": "Пошук звичок...",
+    "reset": "Скинути",
+    "status": "Статус",
+    "habitName": "Назва звички",
+    "description": "Опис",
+    "weekdays-day": "Дні тижня",
+    "streak": "Серія",
+    "actions": "Дії",
+    "noDescription": "Без опису",
+    "noInstances": "Відстеження звичок не знайдено",
+    "unknownHabit": "Невідома звичка",
+    "notSpecified": "Не вказано",
+    "noData": "Немає даних",
+    "streakInfo": "{{current}} днів (найкращий: {{best}})",
+    "frequency": {
+      "easy": "Легко",
+      "medium": "Середньо",
+      "hard": "Складно",
+      "undefined": "Не визначено"
+    },
+    "weekdays": {
+      "monday": "Понеділок",
+      "tuesday": "Вівторок",
+      "wednesday": "Середа",
+      "thursday": "Четвер",
+      "friday": "П'ятниця",
+      "saturday": "Субота",
+      "sunday": "Неділя",
+      "short": {
+        "monday": "Пн",
+        "tuesday": "Вт",
+        "wednesday": "Ср",
+        "thursday": "Чт",
+        "friday": "Пт",
+        "saturday": "Сб",
+        "sunday": "Нд"
+      }
+    },
+    "error": {
+      "loadHabits": "Не вдалося завантажити звички",
+      "loadInstances": "Не вдалося завантажити відстеження звичок",
+      "updateStatus": "Не вдалося оновити статус звички",
+      "regenerate": "Не вдалося оновити відстеження звичок"
+    },
+    "success": {
+      "habitCompleted": "Звичку позначено як виконану",
+      "instancesUpdated": "Відстеження звичок успішно оновлено"
+    }
   }
 }

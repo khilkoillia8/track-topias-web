@@ -19,6 +19,7 @@ import { RouterLink } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
 import { TagModule } from 'primeng/tag';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-habit-instances-page',
@@ -36,7 +37,8 @@ import { ToolbarModule } from 'primeng/toolbar';
     ToastModule,
     BadgeModule,
     TagModule,
-    ToolbarModule
+    ToolbarModule,
+    TranslateModule
   ],
   providers: [MessageService],
   templateUrl: './habit-instances-page.component.html',
@@ -47,24 +49,49 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
   habits: HabitDto[] = [];
   loading = false;
   
-
   selectedDate: Date = new Date();
   selectedHabitId: number | null = null;
   showCompleted = true;
   showPending = true;
   searchQuery: string = '';
   
+  weekdaysMap: {[key: string]: string} = {};
+  
   private destroy$ = new Subject<void>();
 
   constructor(
     private habitInstanceService: HabitInstanceService,
     private habitService: HabitService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
+    this.initTranslations();
     this.loadHabits();
     this.loadHabitInstances();
+  }
+
+  initTranslations() {
+    this.translateService.get([
+      'habitsTracking.weekdays.monday',
+      'habitsTracking.weekdays.tuesday',
+      'habitsTracking.weekdays.wednesday',
+      'habitsTracking.weekdays.thursday',
+      'habitsTracking.weekdays.friday',
+      'habitsTracking.weekdays.saturday',
+      'habitsTracking.weekdays.sunday'
+    ]).subscribe(translations => {
+      this.weekdaysMap = {
+        'monday': translations['habitsTracking.weekdays.monday'],
+        'tuesday': translations['habitsTracking.weekdays.tuesday'],
+        'wednesday': translations['habitsTracking.weekdays.wednesday'],
+        'thursday': translations['habitsTracking.weekdays.thursday'],
+        'friday': translations['habitsTracking.weekdays.friday'],
+        'saturday': translations['habitsTracking.weekdays.saturday'],
+        'sunday': translations['habitsTracking.weekdays.sunday']
+      };
+    });
   }
 
   ngOnDestroy() {
@@ -80,10 +107,12 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
           this.habits = habits;
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося завантажити звички'
+          this.translateService.get(['habitsTracking.error', 'habitsTracking.error.loadHabits']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['habitsTracking.error'],
+              detail: translations['habitsTracking.error.loadHabits']
+            });
           });
           console.error('Error loading habits', err);
         }
@@ -140,10 +169,12 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: 'Не вдалося завантажити відстеження звичок'
+          this.translateService.get(['habitsTracking.error', 'habitsTracking.error.loadInstances']).subscribe(translations => {
+            this.messageService.add({
+              severity: 'error',
+              summary: translations['habitsTracking.error'],
+              detail: translations['habitsTracking.error.loadInstances']
+            });
           });
           console.error('Error loading habit instances', err);
           this.loading = false;
@@ -180,17 +211,21 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
           this.habitService.updateHabitStreak(instance.habitId).subscribe();
         }
         
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Успішно',
-          detail: 'Звичку позначено як виконану'
+        this.translateService.get(['habitsTracking.success', 'habitsTracking.success.habitCompleted']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'success',
+            summary: translations['habitsTracking.success'],
+            detail: translations['habitsTracking.success.habitCompleted']
+          });
         });
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося оновити статус звички'
+        this.translateService.get(['habitsTracking.error', 'habitsTracking.error.updateStatus']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['habitsTracking.error'],
+            detail: translations['habitsTracking.error.updateStatus']
+          });
         });
         console.error('Error updating habit instance status', err);
       }
@@ -199,7 +234,7 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
 
   getHabitTitle(habitId: number): string {
     const habit = this.habits.find(h => h.id === habitId);
-    return habit ? habit.title : 'Невідома звичка';
+    return habit ? habit.title : this.translateService.instant('habitsTracking.unknownHabit');
   }
   
   getHabitDescription(habitId: number): string | null {
@@ -213,26 +248,22 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
   }
   
   formatWeekdays(weekdays: string[]): string {
-    if (!weekdays || weekdays.length === 0) return 'Не вказано';
+    if (!weekdays || weekdays.length === 0) {
+      return this.translateService.instant('habitsTracking.notSpecified');
+    }
     
-    const daysMap: {[key: string]: string} = {
-      'monday': 'Пн',
-      'tuesday': 'Вт',
-      'wednesday': 'Ср',
-      'thursday': 'Чт',
-      'friday': 'Пт',
-      'saturday': 'Сб',
-      'sunday': 'Нд'
-    };
-    
-    return weekdays.map(day => daysMap[day] || day).join(', ');
+    return weekdays.map(day => this.translateService.instant(`habitsTracking.weekdays.short.${day}`) || day).join(', ');
   }
   
   getStreakInfo(habitId: number): string {
     const habit = this.habits.find(h => h.id === habitId);
-    return habit && habit.streak ? 
-      `${habit.streak.currentStreak} днів (найкращий: ${habit.streak.bestStreak})` : 
-      'Немає даних';
+    if (habit && habit.streak) {
+      return this.translateService.instant('habitsTracking.streakInfo', {
+        current: habit.streak.currentStreak,
+        best: habit.streak.bestStreak
+      });
+    }
+    return this.translateService.instant('habitsTracking.noData');
   }
 
   regenerateInstances() {
@@ -245,17 +276,21 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
     Promise.all(promises)
       .then(() => {
         this.loadHabitInstances();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Успішно',
-          detail: 'Відстеження звичок успішно оновлено'
+        this.translateService.get(['habitsTracking.success', 'habitsTracking.success.instancesUpdated']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'success',
+            summary: translations['habitsTracking.success'],
+            detail: translations['habitsTracking.success.instancesUpdated']
+          });
         });
       })
       .catch(err => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Помилка',
-          detail: 'Не вдалося оновити відстеження звичок'
+        this.translateService.get(['habitsTracking.error', 'habitsTracking.error.regenerate']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['habitsTracking.error'],
+            detail: translations['habitsTracking.error.regenerate']
+          });
         });
         console.error('Error regenerating habit instances', err);
         this.loading = false;
@@ -264,13 +299,15 @@ export class HabitInstancesPageComponent implements OnInit, OnDestroy {
   
   getFrequencyLabel(habitId: number): string {
     const habit = this.habits.find(h => h.id === habitId);
-    if (!habit || !habit.weekdays || habit.weekdays.length === 0) return 'Не вказано';
+    if (!habit || !habit.weekdays || habit.weekdays.length === 0) {
+      return this.translateService.instant('habitsTracking.notSpecified');
+    }
 
     switch(habit.weekdays.length) {
-      case 1: case 2: return 'Легко';
-      case 3: case 4: case 5: return 'Середньо';
-      case 6: case 7: return 'Складно';
-      default: return 'Не визначено';
+      case 1: case 2: return this.translateService.instant('habitsTracking.frequency.easy');
+      case 3: case 4: case 5: return this.translateService.instant('habitsTracking.frequency.medium');
+      case 6: case 7: return this.translateService.instant('habitsTracking.frequency.hard');
+      default: return this.translateService.instant('habitsTracking.frequency.undefined');
     }
   }
   

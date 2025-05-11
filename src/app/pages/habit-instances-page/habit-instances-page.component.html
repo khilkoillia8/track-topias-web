@@ -6,8 +6,8 @@
   <div class="row">
     <div class="col-12">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0 text-white">Відстеження звичок</h2>
-        <button pButton icon="pi pi-refresh" label="Оновити таблицю" 
+        <h2 class="mb-0 text-white">{{ 'habitsTracking.title' | translate }}</h2>
+        <button pButton icon="pi pi-refresh" [label]="'habitsTracking.refreshTable' | translate" 
                 class="p-button-info" (click)="regenerateInstances()"></button>
       </div>
       
@@ -16,46 +16,46 @@
           <div class="p-toolbar-group-start w-100">
             <div class="row w-100">
               <div class="col-md-3 mb-3">
-                <label class="form-label">Дата</label>
+                <label class="form-label">{{ 'habitsTracking.date' | translate }}</label>
                 <p-calendar [(ngModel)]="selectedDate" [showIcon]="true" 
                           dateFormat="dd/mm/yy" styleClass="w-100"
                           [showButtonBar]="true" (onSelect)="applyFilters()"></p-calendar>
               </div>
               <div class="col-md-3 mb-3">
-                <label class="form-label">Звичка</label>
+                <label class="form-label">{{ 'habitsTracking.habit' | translate }}</label>
                 <p-dropdown [options]="habits" [(ngModel)]="selectedHabitId"
                           optionLabel="title" optionValue="id" 
-                          [showClear]="true" placeholder="Всі звички"
+                          [showClear]="true" [placeholder]="'habitsTracking.allHabits' | translate"
                           styleClass="w-100" (onChange)="applyFilters()"></p-dropdown>
               </div>
               <div class="col-md-2 mb-3 d-flex flex-column">
-                <label class="form-label">Фільтр</label>
+                <label class="form-label">{{ 'habitsTracking.filter' | translate }}</label>
                 <div class="d-flex">
                   <div class="form-check me-2">
                     <input class="form-check-input" type="checkbox" [(ngModel)]="showCompleted"
                           id="showCompleted" (change)="applyFilters()">
                     <label class="form-check-label" for="showCompleted">
-                      Виконані
+                      {{ 'habitsTracking.completed' | translate }}
                     </label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" [(ngModel)]="showPending"
                           id="showPending" (change)="applyFilters()">
                     <label class="form-check-label" for="showPending">
-                      Невиконані
+                      {{ 'habitsTracking.pending' | translate }}
                     </label>
                   </div>
                 </div>
               </div>
               <div class="col-md-3 mb-3 d-flex flex-column">
-                <label class="form-label">Пошук</label>
+                <label class="form-label">{{ 'habitsTracking.search' | translate }}</label>
                 <div class="p-inputgroup">
-                  <input type="text" pInputText [(ngModel)]="searchQuery" placeholder="Пошук звичок...">
+                  <input type="text" pInputText [(ngModel)]="searchQuery" [placeholder]="'habitsTracking.searchHabits' | translate">
                   <button type="button" pButton icon="pi pi-search" (click)="search()"></button>
                 </div>
               </div>
               <div class="col-md-1 mb-3 d-flex align-items-end">
-                <button pButton type="button" label="Скинути" 
+                <button pButton type="button" [label]="'habitsTracking.reset' | translate" 
                       class="p-button-outlined w-100" (click)="resetFilters()"></button>
               </div>
             </div>
@@ -69,13 +69,13 @@
               [rowHover]="true">
         <ng-template pTemplate="header">
           <tr>
-            <th style="width: 4rem" class="text-center">Статус</th>
-            <th style="width: 20%">Назва звички</th>
-            <th style="width: 10rem">Дата</th>
-            <th style="width: 15%">Опис</th>
-            <th style="width: 12%">Дні тижня</th>
-            <th style="width: 12%">Серія</th>
-            <th style="width: 8%">Дії</th>
+            <th style="width: 4rem" class="text-center">{{ 'habitsTracking.status' | translate }}</th>
+            <th style="width: 20%">{{ 'habitsTracking.habitName' | translate }}</th>
+            <th style="width: 10rem">{{ 'habitsTracking.date' | translate }}</th>
+            <th style="width: 15%">{{ 'habitsTracking.description' | translate }}</th>
+            <th style="width: 12%">{{ 'habitsTracking.weekdays-day' | translate }}</th>
+            <th style="width: 12%">{{ 'habitsTracking.streak' | translate }}</th>
+            <th style="width: 8%">{{ 'habitsTracking.actions' | translate }}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-instance>
@@ -99,7 +99,7 @@
               </span>
             </td>
             <td>{{ instance.date | date:'mediumDate' }}</td>
-            <td class="description-cell">{{ getHabitDescription(instance.habitId) || 'Без опису' }}</td>
+            <td class="description-cell">{{ getHabitDescription(instance.habitId) || ('habitsTracking.noDescription' | translate) }}</td>
             <td>{{ formatWeekdays(getHabitWeekdays(instance.habitId)) }}</td>
             <td>{{ getStreakInfo(instance.habitId) }}</td>
             <td *ngIf="!instance.completed">
@@ -114,7 +114,7 @@
           <tr>
             <td colspan="7" class="text-center p-4">
               <div class="empty-message">
-                <p>Відстеження звичок не знайдено</p>
+                <p>{{ 'habitsTracking.noInstances' | translate }}</p>
               </div>
             </td>
           </tr>
