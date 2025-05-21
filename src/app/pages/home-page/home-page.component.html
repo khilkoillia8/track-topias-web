@@ -7,7 +7,30 @@
       <p-card [header]="'home.userProfile' | translate" styleClass="task-card shadow text-white">
         <div class="text-center py-3">
           <h5 class="section-title mb-2">{{ user?.username || ('home.user' | translate) }}</h5>
-          <i class="pi pi-user fs-1 rounded-circle bg-secondary p-3 text-white"></i>
+          
+          <!-- User photo with edit button -->
+          <div class="profile-photo-container">
+            <div *ngIf="userPhotoLoading" class="photo-loading">
+              <i class="pi pi-spin pi-spinner"></i>
+            </div>
+            
+            <img *ngIf="userPhoto && !userPhotoLoading" 
+                 [src]="userPhoto" 
+                 alt="Profile Photo" 
+                 class="user-avatar mb-2" 
+                 (error)="handlePhotoError()" />
+                 
+            <div *ngIf="!userPhoto && !userPhotoLoading" class="user-avatar-placeholder mb-2">
+              <i class="pi pi-user"></i>
+            </div>
+            
+            <button *ngIf="user?.id" 
+                    pButton 
+                    icon="pi pi-camera" 
+                    class="p-button-rounded p-button-sm photo-edit-button"
+                    (click)="openPhotoUpload()">
+            </button>
+          </div>
         </div>
 
         <div *ngIf="loading.level" class="text-center my-3 text-white">
@@ -134,3 +157,9 @@
     <button pButton icon="pi pi-check" [label]="'home.close' | translate" (click)="hideStreakModal()"></button>
   </ng-template>
 </p-dialog>
+
+<app-photo-upload 
+  [(visible)]="photoUploadVisible" 
+  [userId]="userId"
+  (photoUploaded)="loadUserPhoto()">
+</app-photo-upload>

@@ -7,6 +7,7 @@ import {UIChart} from "primeng/chart";
 import {CheckboxModule} from 'primeng/checkbox';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {ToastModule} from 'primeng/toast';
+import {Tooltip} from "primeng/tooltip";
 import {forkJoin, Subject, switchMap} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {User} from '../../shared/auth/models/auth.model';
@@ -25,6 +26,9 @@ import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {DialogModule} from 'primeng/dialog';
 import {ButtonModule} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import { UserPhotoService } from '../../shared/profile-photo/services/user-photo-service.service';
+import { PhotoUploadComponent } from '../../shared/profile-photo/components/photo-upload.component';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home-page',
@@ -40,7 +44,8 @@ import {TableModule} from 'primeng/table';
     BaseChartDirective,
     DialogModule,
     ButtonModule,
-    TableModule
+    TableModule,
+    PhotoUploadComponent,
   ],
   providers: [MessageService],
   templateUrl: './home-page.component.html',
@@ -48,6 +53,7 @@ import {TableModule} from 'primeng/table';
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   user: User | null = null;
+  userId: number = 0;
   todayMissions: MissionDto[] = [];
   radarChartLabels: string[] = [];
   todayHabitInstances: HabitInstanceDto[] = [];
@@ -56,10 +62,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
     level: false,
     streaks: false
   };
-  
-  // New properties for streak modal
+
   streakModalVisible: boolean = false;
   userHabits: HabitDto[] = [];
+ 
+  userPhoto: SafeUrl | null = null;
+  userPhotoLoading: boolean = false;
+  photoUploadVisible: boolean = false;
 
   public radarChartData = [
     {
@@ -88,7 +97,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
     private habitInstanceService: HabitInstanceService,
     private userService: UserService,
     private messageService: MessageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private userPhotoService: UserPhotoService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -96,15 +107,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(user => {
       this.user = user;
+      this.userId = user ? user.id : 0;
       if (user && user.id) {
-        this.loadUserLevel(user.id);
+        this.loadUserLevel(this.userId);
+        this.loadUserPhoto();
       }
     });
     
     this.loadTodaysTasks();
     this.loadStatistics();
   }
-
+  
   private loadStatistics() {
     this.statisticsService.getMainUserStatistics().pipe(
       takeUntil(this.destroy$)
@@ -340,5 +353,45 @@ export class HomePageComponent implements OnInit, OnDestroy {
       best: habit.bestStreak
     });
 
+  }
+
+  loadUserPhoto(): void {
+    this.userPhotoLoading = true;
+    this.userPhoto = null;
+    
+    this.userPhotoService.getUserPhoto(this.userId).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (blob) => {
+        if (!blob) {
+          this.userPhotoLoading = false;
+          return;
+        }
+     
+        const objectUrl = URL.createObjectURL(blob) + '#' + new Date().getTime();
+        this.userPhoto = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+        this.userPhotoLoading = false;
+      },
+      error: (err) => {
+
+        this.translateService.get(['photo.error.title', 'photo.error.loading']).subscribe(translations => {
+          this.messageService.add({
+            severity: 'error',
+            summary: translations['photo.error.title'],
+            detail: translations['photo.error.loading']
+          });
+        });
+        console.error('Error loading user photo', err);
+        this.userPhotoLoading = false;
+      }
+    });
+  }
+  
+  handlePhotoError(): void {
+    this.userPhoto = null;
+  }
+  
+  openPhotoUpload(): void {
+    this.photoUploadVisible = true;
   }
 }

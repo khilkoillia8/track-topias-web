@@ -61,12 +61,13 @@
                   </td>
                   <td>
                     <div class="user-info">
-                      <p-avatar 
-                        icon="pi pi-user" 
-                        [style]="{'background-color': isCurrentUser(rating.userId) ? 'var(--primary-color)' : '#ccc'}" 
-                        shape="circle"
-                      ></p-avatar>
-                      <span class="ms-2">{{ rating.username }}</span>
+                      <app-user-avatar
+                        [userId]="rating.userId"
+                        [username]="rating.username"
+                        [isCurrentUser]="isCurrentUser(rating.userId)"
+                        class="me-2"
+                      ></app-user-avatar>
+                      <span>{{ rating.username }}</span>
                     </div>
                   </td>
                   <td>
@@ -140,12 +141,13 @@
                   </td>
                   <td>
                     <div class="user-info">
-                      <p-avatar 
-                        icon="pi pi-user" 
-                        [style]="{'background-color': isCurrentUser(rating.userId) ? 'var(--primary-color)' : '#ccc'}" 
-                        shape="circle"
-                      ></p-avatar>
-                      <span class="ms-2">{{ rating.username }}</span>
+                      <app-user-avatar
+                        [userId]="rating.userId"
+                        [username]="rating.username"
+                        [isCurrentUser]="isCurrentUser(rating.userId)"
+                        class="me-2"
+                      ></app-user-avatar>
+                      <span>{{ rating.username }}</span>
                     </div>
                   </td>
                   <td>
@@ -219,12 +221,13 @@
                   </td>
                   <td>
                     <div class="user-info">
-                      <p-avatar 
-                        icon="pi pi-user" 
-                        [style]="{'background-color': isCurrentUser(rating.userId) ? 'var(--primary-color)' : '#ccc'}" 
-                        shape="circle"
-                      ></p-avatar>
-                      <span class="ms-2">{{ rating.username }}</span>
+                      <app-user-avatar
+                        [userId]="rating.userId"
+                        [username]="rating.username"
+                        [isCurrentUser]="isCurrentUser(rating.userId)"
+                        class="me-2"
+                      ></app-user-avatar>
+                      <span>{{ rating.username }}</span>
                     </div>
                   </td>
                   <td>
@@ -298,12 +301,13 @@
                   </td>
                   <td>
                     <div class="user-info">
-                      <p-avatar 
-                        icon="pi pi-user" 
-                        [style]="{'background-color': isCurrentUser(rating.userId) ? 'var(--primary-color)' : '#ccc'}" 
-                        shape="circle"
-                      ></p-avatar>
-                      <span class="ms-2">{{ rating.username }}</span>
+                      <app-user-avatar
+                        [userId]="rating.userId"
+                        [username]="rating.username"
+                        [isCurrentUser]="isCurrentUser(rating.userId)"
+                        class="me-2"
+                      ></app-user-avatar>
+                      <span>{{ rating.username }}</span>
                     </div>
                   </td>
                   <td>

@@ -22,6 +22,7 @@ import { MissionDto } from '../../shared/mission/models/mission.model';
 import { HabitDto } from '../../shared/habit/models/habit.model';
 import { ButtonModule } from 'primeng/button';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { UserAvatarComponent } from '../../shared/profile-photo/components/user-avatar.component';
 
 interface UserWithLevel {
   user: User;
@@ -55,7 +56,8 @@ interface UserDetailStats {
     TabViewModule,
     ChartModule,
     ButtonModule,
-    TranslateModule
+    TranslateModule,
+    UserAvatarComponent
   ],
   providers: [MessageService],
   templateUrl: './social-page.component.html',

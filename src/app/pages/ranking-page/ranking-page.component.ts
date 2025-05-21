@@ -18,6 +18,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { AvatarModule } from 'primeng/avatar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { UserAvatarComponent } from '../../shared/profile-photo/components/user-avatar.component';
 
 @Component({
   selector: 'app-ranking-page',
@@ -36,7 +37,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     ProgressBarModule,
     AvatarModule,
     SkeletonModule,
-    TranslateModule
+    TranslateModule,
+    UserAvatarComponent
   ],
   providers: [MessageService],
   templateUrl: './ranking-page.component.html',

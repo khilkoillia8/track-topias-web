@@ -22,13 +22,12 @@
           <p-card styleClass="user-card" (click)="showUserDetails(userWithLevel.user, userWithLevel.level)">
             <div class="user-info">
               <div class="d-flex align-items-center mb-3">
-                <p-avatar 
-                  icon="pi pi-user" 
-                  size="large" 
-                  [style]="{'background-color': '#4169e1'}" 
-                  shape="circle"
+                <app-user-avatar
+                  [userId]="userWithLevel.user.id"
+                  [username]="userWithLevel.user.username"
+                  size="large"
                   class="me-3"
-                ></p-avatar>
+                ></app-user-avatar>
                 <div>
                   <h4 class="mb-1">{{ userWithLevel.user.username }}</h4>
                   <span class="role-badge">{{ userWithLevel.user.role || ('social.user' | translate) }}</span>
@@ -88,13 +87,12 @@
       <div class="row">
         <div class="col-md-6">
           <div class="d-flex align-items-center">
-            <p-avatar 
-              icon="pi pi-user" 
-              size="xlarge" 
-              [style]="{'background-color': '#4169e1'}" 
-              shape="circle"
+            <app-user-avatar
+              [userId]="selectedUser.id"
+              [username]="selectedUser.username"
+              size="xlarge"
               class="me-3"
-            ></p-avatar>
+            ></app-user-avatar>
             <div>
               <h3 class="mb-1">{{ selectedUser.username }}</h3>
               <span class="role-badge">{{ selectedUser.role || ('social.user' | translate) }}</span>

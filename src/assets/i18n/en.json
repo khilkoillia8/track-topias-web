@@ -348,5 +348,23 @@
       "loadHabitStreakRatings": "Failed to load habit streak rankings",
       "loadHabitCompletionRatings": "Failed to load habit completion rankings"
     }
+  },
+  "photo": {
+    "uploadTitle": "Upload Profile Photo",
+    "selectPrompt": "Select a profile photo to upload",
+    "sizeLimit": "Maximum file size: 5MB",
+    "chooseButton": "Choose",
+    "uploadButton": "Upload",
+    "cancelButton": "Cancel",
+    "success": {
+      "title": "Success",
+      "message": "Profile photo uploaded successfully"
+    },
+    "error": {
+      "title": "Error",
+      "loading": "Could not load profile photo",
+      "fileSize": "File size exceeds 5MB limit",
+      "upload": "Could not upload profile photo"
+    }
   }
 }
